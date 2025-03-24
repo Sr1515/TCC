@@ -1,0 +1,82 @@
+# Arquivos do Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Arquivos do Django
+*.log
+local_settings.py
+db.sqlite3
+media/
+
+# Arquivos do VS Code
+.vscode/
+
+# Arquivos do Poetry
+.poetry/
+.poetry.lock
+
+# Arquivos do Docker
+.env
+.dockerignore
+docker-compose.override.yml
+docker-compose.yml
+Dockerfile
+
+# Arquivos de ambiente
+.environment/
+
+# Volumes do Docker
+data/
+
+# Arquivos do IDE
+.idea/
+*.swp
+*.swo
+
+# Logs e banco de dados
+*.log
+*.sqlite3
+
+# Diretórios de testes
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Diretórios de build
+dist/
+build/
+*.mo
+*.pot
+
+# Arquivos do macOS
+.DS_Store
+
+# Arquivos do Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
