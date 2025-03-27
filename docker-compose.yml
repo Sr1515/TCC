@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:6.0-alpine
+    container_name: redis
+    ports:
+      - "6382:6379"
+    networks:
+      - app_network
+
+  db:
+    image: postgres:14
+    container_name: postgres_db
+    hostname: postgres_db
+    env_file:
+      - ./.environment/.postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    networks:
+      - app_network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: djangoApi
+    command: poetry run python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.environment/.django
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  app_network:
+    driver: bridge

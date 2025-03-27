@@ -20,6 +20,7 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+env/
 
 # Arquivos do Django
 *.log
@@ -38,8 +39,6 @@ media/
 .env
 .dockerignore
 docker-compose.override.yml
-docker-compose.yml
-Dockerfile
 
 # Arquivos de ambiente
 .environment/

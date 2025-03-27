@@ -56,7 +56,7 @@ STATICFILES_DIRS = [
 
 WSGI_APPLICATION = 'apiTCC.wsgi.application'
 
-# AUTH_USER_MODEL = 'core.CustomUser'
+AUTH_USER_MODEL = 'core.CustomUser'
 
 DATABASES = {
      'default': env.db('DATABASE_URL', default='postgres://postgres:postgres@localhost:5432/mydb')
