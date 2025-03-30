@@ -5,7 +5,6 @@ description = ""
 authors = [
     {name = "Sr1515",email = "joao151576@gmail.com"}
 ]
-readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
     "djangorestframework (>=3.15.2,<4.0.0)",

@@ -30,25 +30,21 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return instance
 
 class GameSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Game
         fields = '__all__'
 
 class PlayerSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Player
         fields = '__all__'
 
 class SessionSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Session
         fields = '__all__'
 
 class ResultSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Result
         fields = '__all__'
