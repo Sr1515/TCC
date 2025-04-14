@@ -1,12 +1,35 @@
-# Arquivos do Python
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node (React/Vite)
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+
+# Python - Virtualenvs
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Build artifacts
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -16,46 +39,20 @@ parts/
 sdist/
 var/
 wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
-env/
 
-# Arquivos do Django
-*.log
+# Django
 local_settings.py
 db.sqlite3
-media/
-
-# Arquivos do VS Code
-.vscode/
-
-# Arquivos do Poetry
-.poetry/
-.poetry.lock
-
-# Arquivos do Docker
-.env
-.dockerignore
-docker-compose.override.yml
-
-# Arquivos de ambiente
-.environment/
-
-# Volumes do Docker
-data/
-
-# Arquivos do IDE
-.idea/
-*.swp
-*.swo
-
-# Logs e banco de dados
-*.log
 *.sqlite3
+media/
+staticfiles/
 
-# Diretórios de testes
+# Test & coverage
 htmlcov/
 .coverage
 .coverage.*
@@ -66,16 +63,32 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Diretórios de build
-dist/
-build/
-*.mo
-*.pot
+# Poetry
+.poetry/
+poetry.lock
 
-# Arquivos do macOS
+# Docker
+.env
+.environment/
+.dockerignore
+docker-compose.override.yml
+data/
+
+# IDEs and Editors
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# macOS
 .DS_Store
 
-# Arquivos do Windows
+# Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
