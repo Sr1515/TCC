@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Game, Player, BatchesResults, Session
+from .models import CustomUser, Game, Player, BatchResult, Session
 from django.core.exceptions import ValidationError
 
 class CustomUserAdmin(UserAdmin):
@@ -49,5 +49,5 @@ class SessionAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Game, GameAdmin)
 admin.site.register(Player, PlayerAdmin)
-admin.site.register(BatchesResults, ResultAdmin)
+admin.site.register(BatchResult, ResultAdmin)
 admin.site.register(Session, SessionAdmin)

@@ -21,3 +21,15 @@ sp:
 
 reset:
 	make off-v && make build && make mk && make mg && make sp
+
+test-serializers: 
+	docker compose exec api poetry run python manage.py test core.tests.tests_serializers
+
+test-models: 
+	docker compose exec api poetry run python manage.py test core.tests.tests_models
+
+test-views:
+	docker compose exec api poetry run python manage.py test core.tests.tests_views
+
+tests:
+	make test-models && make test-serializers && make test-views

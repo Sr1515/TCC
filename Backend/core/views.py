@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
-from .models import CustomUser, Game, Player, Session, BatchesResults
-from .serializers import CustomUserSerializer, GameSerializer, PlayerSerializer, SessionSerializer, BatchsResultsSerializer
+from .models import CustomUser, Game, Player, Session, BatchResult
+from .serializers import CustomUserSerializer, GameSerializer, PlayerSerializer, SessionSerializer, BatchResultSerializer
 
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -30,6 +30,6 @@ class SessionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 class BatchResultViewSet(viewsets.ModelViewSet):
-    queryset = BatchesResults.objects.all()
-    serializer_class = BatchsResultsSerializer
+    queryset = BatchResult.objects.all()
+    serializer_class = BatchResultSerializer
     permission_classes = [permissions.IsAuthenticated]

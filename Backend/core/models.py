@@ -94,7 +94,7 @@ class Player(BaseModel):
         if self.session.players.count() >= self.session.max_participantes:
             raise ValidationError("Número máximo de participantes atingido!") 
     
-class BatchesResults(BaseModel):
+class BatchResult(BaseModel):
     session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='batches_results')
     data = models.JSONField() 
     timestamp = models.DateTimeField(auto_now_add=True)  

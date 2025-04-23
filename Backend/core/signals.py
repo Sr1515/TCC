@@ -1,9 +1,9 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import BatchesResults, Player
+from .models import BatchResult, Player
 from decimal import Decimal
 
-@receiver(post_save, sender=BatchesResults)
+@receiver(post_save, sender=BatchResult)
 def calculate_player_metrics(sender, instance, created, **kwargs):
     
     if created: 

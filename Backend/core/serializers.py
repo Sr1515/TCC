@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Game, Session, BatchesResults, Player
+from .models import CustomUser, Game, Session, BatchResult, Player
 from django.contrib.auth.hashers import make_password
 from datetime import datetime
 
@@ -45,11 +45,11 @@ class SessionSerializer(serializers.ModelSerializer):
         model = Session
         fields = '__all__'
 
-class BatchsResultsSerializer(serializers.ModelSerializer):
+class BatchResultSerializer(serializers.ModelSerializer):
     session = serializers.PrimaryKeyRelatedField(queryset = Session.objects.all())
     data_ = serializers.JSONField
     class Meta:
-        model = BatchesResults
+        model = BatchResult
         fields = ['session', 'data', 'timestamp']
 
     
