@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -20,5 +19,28 @@ export const Container = styled.div`
   background-color: #5B6475;
   padding: 2rem;
   overflow: auto;
-  gap: 6rem;
+  gap: 6rem; 
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    gap: 3rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    gap: 2rem;
+  }
+`;
+
+export const FooterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
 `;
