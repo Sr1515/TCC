@@ -6,19 +6,15 @@ import { Container, FooterContainer } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
-const Login = () => {
+const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
 
     const handleLogin = () => {
         console.log("Email:", email);
         console.log("Senha:", password);
-
-        if (!email || !password) {
-            alert("Preencha todos os campos!");
-            return;
-        }
-
+        console.log(`Username ${username}`)
         console.log("Fazendo login...");
     };
 
@@ -26,7 +22,7 @@ const Login = () => {
         <>
             <Container>
 
-                <Title name="Entrar" />
+                <Title name="Cadastrar" />
 
                 <Input
                     icon={FaUser}
@@ -37,6 +33,14 @@ const Login = () => {
                 />
 
                 <Input
+                    icon={FaUser}
+                    type="text"
+                    placeholder="Nome de usuário"
+                    value={username}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                />
+
+                <Input
                     icon={FaLock}
                     type="password"
                     placeholder="Digite sua senha"
@@ -44,11 +48,11 @@ const Login = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 />
 
-                <Button name="Entrar" onClick={handleLogin} />
+                <Button name="Cadastrar" onClick={handleLogin} />
 
                 <FooterContainer>
-                    <Title name="Não tem conta?" color="#7D8597" fontSize="28px" />
-                    <Title name="Cadastre-se" color="#FCA311" fontSize="28px" />
+                    <Title name="Já possui conta?" color="#7D8597" fontSize="28px" />
+                    <Title name="Entrar" color="#FCA311" fontSize="28px" />
                 </FooterContainer>
 
             </Container>
@@ -56,4 +60,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default SignUp;
