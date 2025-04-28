@@ -12,14 +12,15 @@ export const Container = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   background-color: #5B6475;
-  padding: 2rem;
   overflow: auto;
-  gap: 6rem; 
+  gap: 5rem; 
 
   @media (max-width: 768px) {
     padding: 1rem;
@@ -35,6 +36,7 @@ export const Container = styled.div`
 export const FooterContainer = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
 

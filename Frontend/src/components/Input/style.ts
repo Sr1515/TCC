@@ -14,7 +14,6 @@ export const InputContainer = styled.div`
   margin: 0 auto; 
 `;
 
-
 export const InputField = styled.input`
   width: 100%;
   height: 4rem;

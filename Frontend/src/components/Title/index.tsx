@@ -10,7 +10,7 @@ type TitleProps = {
 const Title: React.FC<TitleProps> = ({
     name,
     color = "#1C1C1E",
-    fontSize = "4rem",
+    fontSize = "3rem",
     fontFamily = "'Irish Grover', cursive",
 }) => {
     return (
