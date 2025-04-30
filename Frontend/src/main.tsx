@@ -3,13 +3,11 @@ import { createRoot } from 'react-dom/client'
 
 import Sessions from './pages/Sessions'
 import { GlobalStyle } from './styles/GlobalStyles'
-import Login from './pages/Login'
-import SignUp from './pages/SignUp'
-import Home from './pages/Home'
+import CreateSession from './pages/CreateSession'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GlobalStyle />
-    <Sessions />
+    <CreateSession />
   </StrictMode>,
 )
