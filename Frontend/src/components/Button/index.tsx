@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
     height = "5rem",
     fontSize = "40px",
     backgroundColor = "#FCA311",
-    borderRadius = "1rem",
+    borderRadius = "20px",
     onClick,
 }) => {
     return (
