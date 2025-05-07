@@ -1,13 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
-import Sessions from './pages/Sessions'
-import { GlobalStyle } from './styles/GlobalStyles'
-import CreateSession from './pages/CreateSession'
+import { GlobalStyle } from './styles/GlobalStyles';
+import { AuthProviderContext } from './context/AuthProvider';
+import AppRoutes from './routes/AppRoutes';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <GlobalStyle />
-    <CreateSession />
-  </StrictMode>,
-)
+    <BrowserRouter>
+      <GlobalStyle />
+      <AuthProviderContext>
+        <AppRoutes />
+      </AuthProviderContext>
+    </BrowserRouter>
+  </StrictMode>
+);

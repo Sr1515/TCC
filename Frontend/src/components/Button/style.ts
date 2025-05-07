@@ -10,7 +10,6 @@ export const StyledButton = styled.button`
   font-family: 'Irish Grover', cursive;
   
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
-  
   transition: transform 0.1s ease, box-shadow 0.2s ease;
 
   &:active {

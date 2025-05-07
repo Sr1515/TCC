@@ -25,9 +25,10 @@ const Button: React.FC<ButtonProps> = ({
     return (
         <StyledButton
             style={{ borderRadius, backgroundColor, color, width, height }}
-            onClick={onClick}
-        >
+            onClick={onClick}>
+
             <h1 style={{ fontSize }}>{name}</h1>
+
         </StyledButton>
     );
 };

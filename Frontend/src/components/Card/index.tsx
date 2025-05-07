@@ -19,18 +19,17 @@ const Card: React.FC<SessionCardProps> = ({
     duration,
     color = "#8C92AC"
 }) => {
+
     return (
 
         <Container style={{ color }}>
 
             <GameInfo>
-
-                <h3>Session code: {sessionCode}</h3>
+                <h3>Código da sessão: {sessionCode}</h3>
                 <h3>Jogo: {game}</h3>
                 <h3>Status: {status}</h3>
                 <h3>Jogadores: {players}</h3>
                 <h3>Duração: {duration}</h3>
-
             </GameInfo>
 
             <CardFooter>

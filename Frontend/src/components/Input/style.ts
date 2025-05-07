@@ -20,15 +20,15 @@ export const InputField = styled.input`
   padding: 10px;
   padding-left: 3rem; 
   border: none;
-  border-bottom: 4px solid #101318;
+  border-bottom: 3px solid #101318;
   outline: none;
   font-family: 'Irish Grover', cursive;
   font-size: 36px;
-  color: #A0A4B8;
+  color: whitesmoke;
   background: transparent;
   
   &:focus {
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid whitesmoke;
   }
 
   @media (max-width: 768px) {

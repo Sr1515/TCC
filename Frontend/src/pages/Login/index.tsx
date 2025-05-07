@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaUser, FaLock } from 'react-icons/fa';
 
 import Title from "../../components/Title";
@@ -6,20 +6,25 @@ import { Container, FooterContainer } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
+import { AuthContext } from "../../context/AuthProvider";
+
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = () => {
-        console.log("Email:", email);
-        console.log("Senha:", password);
+    const { login } = useContext(AuthContext);
 
+    const handleLogin = async () => {
         if (!email || !password) {
             alert("Preencha todos os campos!");
             return;
         }
 
-        console.log("Fazendo login...");
+        try {
+            await login(email, password);
+        } catch (error) {
+            alert("Falha ao fazer login. Verifique suas credenciais.");
+        }
     };
 
     return (

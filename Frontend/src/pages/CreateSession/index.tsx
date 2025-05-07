@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "../../components/Button";
 import NavBar from "../../components/Navbar";
 import Title from "../../components/Title";
@@ -17,6 +17,8 @@ import {
     InfoPlayers,
     InfoGames
 } from "./style";
+import { AuthContext } from "../../context/AuthProvider";
+
 
 type Game = {
     name: string;
@@ -32,6 +34,9 @@ const CreateSession = () => {
     const [playersCount, setPlayersCount] = useState<number>(4);
     const [selectedGame, setSelectedGame] = useState<Game | null>(null);
     const [selectedTime, setSelectedTime] = useState<number | null>(null);
+    const { checkToken } = useContext(AuthContext);
+
+    checkToken();
 
     const games: Game[] = [
         { name: "SELECTONE O JOGO", description: "" },
@@ -76,7 +81,9 @@ const CreateSession = () => {
                         <OptionsContainer>
 
                             <InfoPlayers>
+
                                 <Title name="JOGADORES" fontSize="36px" />
+
                                 <PlayerInput
                                     type="number"
                                     min="0"
@@ -84,6 +91,7 @@ const CreateSession = () => {
                                     value={playersCount}
                                     onChange={handlePlayerCountChange}
                                 />
+
                             </InfoPlayers>
 
                             <InfoTime>
@@ -123,10 +131,12 @@ const CreateSession = () => {
                                 </GameSelect>
 
                                 {selectedGame && selectedGame.description && (
+
                                     <GameDescriptionBox>
                                         <Title name={selectedGame.name} fontSize="30px" />
                                         {selectedGame.description}
                                     </GameDescriptionBox>
+
                                 )}
 
                             </InfoGames>

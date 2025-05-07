@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUser, FaLock } from 'react-icons/fa';
+import { FaRegUser, FaLock } from 'react-icons/fa';
 
 import Title from "../../components/Title";
 import { Container, FooterContainer } from "./style";
@@ -25,7 +25,7 @@ const SignUp = () => {
                 <Title name="Cadastrar" />
 
                 <Input
-                    icon={FaUser}
+                    icon={FaRegUser}
                     type="email"
                     placeholder="Digite seu e-mail"
                     value={email}
@@ -33,7 +33,7 @@ const SignUp = () => {
                 />
 
                 <Input
-                    icon={FaUser}
+                    icon={FaRegUser}
                     type="text"
                     placeholder="Nome de usuário"
                     value={username}
@@ -48,7 +48,7 @@ const SignUp = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 />
 
-                <Button name="Cadastrar" onClick={handleLogin} />
+                <Button name="Cadastrar" onClick={handleLogin} width="23rem" />
 
                 <FooterContainer>
                     <Title name="Já possui conta?" color="#7D8597" fontSize="28px" />
