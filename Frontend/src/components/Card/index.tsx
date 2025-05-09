@@ -6,7 +6,7 @@ type SessionCardProps = {
     sessionCode?: string;
     status?: string;
     game?: string;
-    players?: string;
+    players?: number;
     duration?: string;
     color?: string;
 };
@@ -25,12 +25,13 @@ const Card: React.FC<SessionCardProps> = ({
         <Container style={{ color }}>
 
             <GameInfo>
-                <h3>Código da sessão: {sessionCode}</h3>
-                <h3>Jogo: {game}</h3>
-                <h3>Status: {status}</h3>
-                <h3>Jogadores: {players}</h3>
-                <h3>Duração: {duration}</h3>
+                <h3>Código da sessão: <span className="highlight">{sessionCode}</span></h3>
+                <h3>Jogo: <span className="highlight">{game}</span></h3>
+                <h3>Status: <span className="highlight">{status}</span></h3>
+                <h3>Jogadores: <span className="highlight">{players}</span></h3>
+                <h3>Duração: <span className="highlight">{duration}</span></h3>
             </GameInfo>
+
 
             <CardFooter>
 

@@ -15,17 +15,21 @@ export const Container = styled.div`
 `;
 
 export const GameInfo = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
-    text-align: start;
-    width: 30%;
-    color: #1C1C1E;
-    font-family: 'Irish Grover', cursive;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: start;
+  width: 30%;
+  color: #1C1C1E;
+  font-family: 'Irish Grover', cursive;
+
+  .highlight {
+    color: #D3D3D3;
+  }
 `;
+
 
 export const CardFooter = styled.div`
     display: flex;
