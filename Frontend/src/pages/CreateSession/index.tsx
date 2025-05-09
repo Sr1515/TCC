@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "../../components/Button";
 import NavBar from "../../components/Navbar";
 import Title from "../../components/Title";
@@ -18,9 +18,15 @@ import {
     InfoGames
 } from "./style";
 import { AuthContext } from "../../context/AuthProvider";
+import { api } from "../../api/axios";
+
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+
 
 
 type Game = {
+    id: string;
     name: string;
     description: string;
 };
@@ -30,20 +36,21 @@ type TimeOption = {
     label: string;
 };
 
+type TokenPayload = {
+    user_id: string;
+};
+
 const CreateSession = () => {
     const [playersCount, setPlayersCount] = useState<number>(4);
     const [selectedGame, setSelectedGame] = useState<Game | null>(null);
     const [selectedTime, setSelectedTime] = useState<number | null>(null);
+    const [allGames, setAllGames] = useState<Game[] | null>(null);
+    const { tokenState } = useContext(AuthContext);
     const { checkToken } = useContext(AuthContext);
 
-    checkToken();
+    const navigate = useNavigate();
 
-    const games: Game[] = [
-        { name: "SELECTONE O JOGO", description: "" },
-        { name: "Jogo teste", description: "Jogo para testar softskills" },
-        { name: "Jogo para testar softskills", description: "baseado em gerenciar cozinha" },
-        { name: "baseado em gerenciar cozinha", description: "Descrição detalhada sobre o jogo de gerenciar cozinha" }
-    ];
+    checkToken();
 
     const timeOptions: TimeOption[] = [
         { minutes: 4, label: "4 minutos" },
@@ -51,9 +58,30 @@ const CreateSession = () => {
         { minutes: 6, label: "6 minutos" }
     ];
 
+    const fetchGames = async () => {
+
+        if (!tokenState) {
+            return;
+        }
+
+        try {
+            const response = await api.get('games/', {
+                headers: {
+                    Authorization: `Bearer ${tokenState}`
+                }
+            })
+
+            setAllGames(response.data);
+
+        } catch (error) {
+            console.log(`Error: ${error}`)
+        }
+
+    }
+
     const handleGameChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedGameName = e.target.value;
-        const game = games.find(g => g.name === selectedGameName);
+        const game = allGames?.find(g => g.name === selectedGameName) ?? null;
         setSelectedGame(game || null);
     };
 
@@ -65,6 +93,55 @@ const CreateSession = () => {
     const handleTimeSelect = (minutes: number) => {
         setSelectedTime(minutes);
     };
+
+    const onSubmit = async () => {
+
+        if (!tokenState) {
+            return;
+        }
+
+        if (!playersCount) {
+            return;
+        }
+
+        if (!selectedGame) {
+            return;
+        }
+
+        if (!selectedGame) {
+            return;
+        }
+
+        try {
+            const decoded = jwtDecode<TokenPayload>(tokenState);
+            const userId = decoded.user_id;
+
+            const session = {
+                organizer: userId,
+                game: selectedGame.id,
+                max_participantes: playersCount,
+                duration: selectedTime
+            }
+
+            const response = await api.post('sessions/', session, {
+                headers:
+                    { Authorization: `Bearer ${tokenState}` }
+            });
+
+            if (response.status == 201) {
+                navigate('/home', { replace: true });
+            }
+
+
+        } catch (error) {
+            console.log(`Error: ${error}`)
+        }
+    }
+
+    useEffect(() => {
+        fetchGames();
+    }, [tokenState])
+
 
     return (
         <>
@@ -112,7 +189,7 @@ const CreateSession = () => {
 
                             </InfoTime>
 
-                            <Button name="CRIAR SESSÃO" backgroundColor="#3D8361" />
+                            <Button name="CRIAR SESSÃO" backgroundColor="#3D8361" onClick={onSubmit} />
 
                         </OptionsContainer>
 
@@ -123,7 +200,7 @@ const CreateSession = () => {
                                 <Title name="JOGOS" fontSize="36px" />
 
                                 <GameSelect onChange={handleGameChange}>
-                                    {games.map((game, index) => (
+                                    {allGames?.map((game, index) => (
                                         <option key={index} value={game.name}>
                                             {game.name}
                                         </option>
