@@ -62,10 +62,25 @@ class Game(BaseModel):
         return self.name
     
 class Session(BaseModel):
+
+    DURATION_CHOICES = [
+        (2, '2 minutos'),
+        (4, '4 minutos'),
+        (6, '6 minutos')
+    ]
+
+    STATUS_CHOICES = [
+        ('pendente', 'Pendente'),
+        ('em_andamento', 'Em andamento'),
+        ('concluida', 'Concluída'),
+    ]
+
     session_code = models.CharField(max_length = 8, unique = True, blank=True)
     organizer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'sessions_created')
     game = models.ForeignKey(Game, on_delete = models.CASCADE, related_name = 'sessions')
     max_participantes = models.PositiveIntegerField(default = 4) 
+    duration = models.IntegerField(choices=DURATION_CHOICES, default=2)
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='pendente')
 
     def save(self, *args, **kwargs):
         if not self.session_code:

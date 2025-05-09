@@ -41,9 +41,24 @@ class PlayerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SessionSerializer(serializers.ModelSerializer):
+    game_title = serializers.CharField(source='game.name', read_only=True)
+    organizer_username = serializers.CharField(source='organizer.username', read_only=True)
+
     class Meta:
         model = Session
-        fields = '__all__'
+        fields = [
+            'id',
+            'game', 
+            'game_title', 
+            'organizer',
+            'organizer_username', 
+            'session_code',
+            'max_participantes',
+            'duration',
+            'created_at',
+            'updated_at',
+            'status'
+        ]
 
 class BatchResultSerializer(serializers.ModelSerializer):
     session = serializers.PrimaryKeyRelatedField(queryset = Session.objects.all())
