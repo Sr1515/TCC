@@ -46,3 +46,12 @@ export const FooterContainer = styled.div`
     text-align: center;
   }
 `;
+
+export const ErrorMessage = styled.span`
+  display: flex;
+  text-align: center;
+  align-items: center;
+  color: red;
+  padding-top: 10px;
+  font-size: 1.2rem;
+`;

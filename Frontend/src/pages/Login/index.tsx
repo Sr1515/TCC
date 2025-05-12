@@ -1,30 +1,43 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FaUser, FaLock } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
+
 
 import Title from "../../components/Title";
-import { Container, FooterContainer } from "./style";
+import { Container, ErrorMessage, FooterContainer } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
 import { AuthContext } from "../../context/AuthProvider";
+import { loginSchema, LoginData } from "../../schemas/loginSchema";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
     const { login } = useContext(AuthContext);
+    const [loginError, setLoginError] = useState<string>("");
+    const navigate = useNavigate();
 
-    const handleLogin = async () => {
-        if (!email || !password) {
-            alert("Preencha todos os campos!");
-            return;
-        }
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<LoginData>({
+        resolver: zodResolver(loginSchema)
+    })
+
+    const onSubmit = async (data: LoginData) => {
 
         try {
-            await login(email, password);
+            setLoginError("");
+            await login(data.email, data.password);
         } catch (error) {
-            alert("Falha ao fazer login. Verifique suas credenciais.");
+            setLoginError("Falha ao fazer login. Verifique suas credenciais.");
         }
+    };
+
+    const handleGoToSignUp = () => {
+        navigate("/signup");
     };
 
     return (
@@ -33,27 +46,32 @@ const Login = () => {
 
                 <Title name="Entrar" />
 
-                <Input
-                    icon={FaUser}
-                    type="email"
-                    placeholder="Digite seu e-mail"
-                    value={email}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                />
+                <div>
+                    <Input
+                        icon={FaUser}
+                        type="email"
+                        placeholder="Digite seu e-mail"
+                        {...register("email")}
+                    />
+                    {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+                </div>
 
-                <Input
-                    icon={FaLock}
-                    type="password"
-                    placeholder="Digite sua senha"
-                    value={password}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                />
+                <div>
+                    <Input
+                        icon={FaLock}
+                        type="password"
+                        placeholder="Digite sua senha"
+                        {...register("password")}
+                    />
+                    {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+                    {loginError && <ErrorMessage>{loginError}</ErrorMessage>}
+                </div>
 
-                <Button name="Entrar" onClick={handleLogin} />
+                <Button name="Entrar" onClick={handleSubmit(onSubmit)} />
 
                 <FooterContainer>
                     <Title name="Não tem conta?" color="#7D8597" fontSize="28px" />
-                    <Title name="Cadastre-se" color="#FCA311" fontSize="28px" />
+                    <Title name="Cadastre-se" color="#FCA311" fontSize="28px" onClick={handleGoToSignUp} />
                 </FooterContainer>
 
             </Container>
