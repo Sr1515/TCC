@@ -25,9 +25,13 @@ class PlayerViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 class SessionViewSet(viewsets.ModelViewSet):
-    queryset = Session.objects.all()
+    queryset = Session.objects.all() 
     serializer_class = SessionSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Session.objects.filter(organizer=self.request.user)
+
 
 class BatchResultViewSet(viewsets.ModelViewSet):
     queryset = BatchResult.objects.all()
