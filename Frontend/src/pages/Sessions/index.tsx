@@ -32,11 +32,11 @@ const Sessions = () => {
         }
 
         try {
-            const response = await api.get('sessions/', {
+            const response = await api.get("sessions/", {
                 headers: {
                     Authorization: `Bearer ${tokenState}`
                 }
-            })
+            });
 
             console.log(response.data);
             setMySessions(response.data);
@@ -57,10 +57,13 @@ const Sessions = () => {
     return (
         <>
             <NavBar />
+
             <MainContainer>
+
                 {mySessions.map((session) => (
                     <Card
                         key={session.id}
+                        id={session.id}
                         duration={`${session.duration} minutos`}
                         status={session.status}
                         game={session.game_title}
@@ -68,6 +71,8 @@ const Sessions = () => {
                         players={session.max_participantes}
                     />
                 ))}
+
+
             </MainContainer>
 
         </>

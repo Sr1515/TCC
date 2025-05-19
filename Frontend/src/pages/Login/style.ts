@@ -19,11 +19,13 @@ export const Container = styled.div`
   align-items: center;
   flex-wrap: wrap;
   background-color: #5B6475;
+  padding: 2rem;
+  gap: 3rem;
+  min-width: 320px;  
   overflow: auto;
-  gap: 5rem; 
 
   @media (max-width: 768px) {
-    padding: 1rem;
+    padding: 1.5rem;
     gap: 3rem;
   }
 
@@ -36,14 +38,15 @@ export const Container = styled.div`
 export const FooterContainer = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: wrap;  
   gap: 10px;
   justify-content: center;
+  text-align: center;
+  width: 100%; 
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 5px;
-    text-align: center;
+    flex-direction: column;  
+    gap: 5px;  
   }
 `;
 
@@ -54,4 +57,5 @@ export const ErrorMessage = styled.span`
   color: red;
   padding-top: 10px;
   font-size: 1.2rem;
+  width: 100%;  
 `;

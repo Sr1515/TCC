@@ -3,8 +3,8 @@ import { FaRegUser } from 'react-icons/fa';
 import { InputWrapper, InputContainer, InputField, IconWrapper } from './style';
 
 interface InputProps {
-    icon: React.ElementType;
-    placeholder: string;
+    icon?: React.ElementType;
+    placeholder?: string;
     type?: string;
     [key: string]: any;
 }
@@ -12,24 +12,30 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({
     icon: Icon = FaRegUser,
     placeholder = 'Digite algo...',
+    type = 'text',
     ...props
 }) => {
-
     return (
+
         <InputWrapper>
 
             <InputContainer>
 
                 <IconWrapper>
-                    <Icon size={30} />
+                    <Icon size={20} />
                 </IconWrapper>
 
-                <InputField {...props} placeholder={placeholder} />
+                <InputField
+                    type={type}
+                    placeholder={placeholder}
+                    {...props}
+                />
 
             </InputContainer>
 
         </InputWrapper>
     );
+
 };
 
 export default Input;

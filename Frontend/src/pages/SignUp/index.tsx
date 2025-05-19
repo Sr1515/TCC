@@ -1,62 +1,86 @@
-import React, { useState } from "react";
-import { FaRegUser, FaLock } from 'react-icons/fa';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FaUser, FaLock } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 
 import Title from "../../components/Title";
-import { Container, FooterContainer } from "./style";
+import { Container, FooterContainer, ErrorMessage } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
-const SignUp = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
+import { signUpSchema, SignUpData } from "../../schemas/signUpSchema";
+import { api } from "../../api/axios";
 
-    const handleLogin = () => {
-        console.log("Email:", email);
-        console.log("Senha:", password);
-        console.log(`Username ${username}`)
-        console.log("Fazendo login...");
+const SignUp = () => {
+    const [signUpError, setSignUpError] = useState("");
+    const navigate = useNavigate();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<SignUpData>({
+        resolver: zodResolver(signUpSchema)
+    });
+
+    const onSubmit = async (data: SignUpData) => {
+        try {
+            setSignUpError("");
+            const response = await api.post("users/", data);
+
+            if (response.status === 201) {
+                navigate("/");
+            }
+        } catch (error) {
+            setSignUpError("Falha ao cadastrar. Tente novamente!");
+        }
     };
 
     return (
-        <>
-            <Container>
+        <Container>
 
-                <Title name="Cadastrar" />
+            <Title name="Cadastrar" />
 
+            <div>
                 <Input
-                    icon={FaRegUser}
+                    icon={FaUser}
                     type="email"
                     placeholder="Digite seu e-mail"
-                    value={email}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                    {...register("email")}
                 />
+                {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+            </div>
 
+            <div>
                 <Input
-                    icon={FaRegUser}
+                    icon={FaUser}
                     type="text"
                     placeholder="Nome de usuário"
-                    value={username}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                    {...register("username")}
                 />
+                {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
+            </div>
 
+            <div>
                 <Input
                     icon={FaLock}
                     type="password"
                     placeholder="Digite sua senha"
-                    value={password}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                    {...register("password")}
                 />
+                {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+            </div>
 
-                <Button name="Cadastrar" onClick={handleLogin} width="23rem" />
+            {signUpError && <ErrorMessage>{signUpError}</ErrorMessage>}
 
-                <FooterContainer>
-                    <Title name="Já possui conta?" color="#7D8597" fontSize="28px" />
-                    <Title name="Entrar" color="#FCA311" fontSize="28px" />
-                </FooterContainer>
+            <Button name="Cadastrar" onClick={handleSubmit(onSubmit)} width="23rem" />
 
-            </Container>
-        </>
+            <FooterContainer>
+                <Title name="Já possui conta?" color="whitesmoke" fontSize="28px" />
+                <Title name="Entrar" color="#FCA311" fontSize="28px" onClick={() => navigate("/")} />
+            </FooterContainer>
+        </Container>
     );
 };
 

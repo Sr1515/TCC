@@ -1,8 +1,10 @@
 import React from "react";
 import Button from "../Button";
 import { Container, GameInfo, CardFooter } from "./style";
+import { useNavigate } from "react-router-dom";
 
 type SessionCardProps = {
+    id: string;
     sessionCode?: string;
     status?: string;
     game?: string;
@@ -12,6 +14,7 @@ type SessionCardProps = {
 };
 
 const Card: React.FC<SessionCardProps> = ({
+    id,
     sessionCode,
     status,
     game,
@@ -19,11 +22,14 @@ const Card: React.FC<SessionCardProps> = ({
     duration,
     color = "#8C92AC"
 }) => {
+    const navigate = useNavigate();
+
+    const handleDetailsClick = () => {
+        navigate(`/sessions/${id}`);
+    };
 
     return (
-
         <Container style={{ color }}>
-
             <GameInfo>
                 <h3>Código da sessão: <span className="highlight">{sessionCode}</span></h3>
                 <h3>Jogo: <span className="highlight">{game}</span></h3>
@@ -32,9 +38,7 @@ const Card: React.FC<SessionCardProps> = ({
                 <h3>Duração: <span className="highlight">{duration}</span></h3>
             </GameInfo>
 
-
             <CardFooter>
-
                 <Button
                     name="Excluir"
                     height="4rem"
@@ -51,15 +55,11 @@ const Card: React.FC<SessionCardProps> = ({
                     fontSize="32px"
                     backgroundColor="#3D8361"
                     color="#EDF0F4"
+                    onClick={handleDetailsClick}
                 />
-
             </CardFooter>
-
         </Container>
     );
 };
 
 export default Card;
-
-
-

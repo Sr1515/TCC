@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FaUser, FaLock } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 
-
 import Title from "../../components/Title";
 import { Container, ErrorMessage, FooterContainer } from "./style";
 import Input from "../../components/Input";
@@ -64,13 +63,14 @@ const Login = () => {
                         {...register("password")}
                     />
                     {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
-                    {loginError && <ErrorMessage>{loginError}</ErrorMessage>}
                 </div>
+
+                {loginError && <ErrorMessage>{loginError}</ErrorMessage>}
 
                 <Button name="Entrar" onClick={handleSubmit(onSubmit)} />
 
                 <FooterContainer>
-                    <Title name="Não tem conta?" color="#7D8597" fontSize="28px" />
+                    <Title name="Não tem conta?" color="white" fontSize="28px" />
                     <Title name="Cadastre-se" color="#FCA311" fontSize="28px" onClick={handleGoToSignUp} />
                 </FooterContainer>
 
