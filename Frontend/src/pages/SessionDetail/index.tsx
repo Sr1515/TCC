@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { api } from "../../api/axios";
 import NavBar from "../../components/Navbar";
-import { Container, Content, ExportData, HeaderContent, SessionCard, SessionInfo } from "./style";
+import { CenteredTitle, Container, Content, ExportData, HeaderContent, PlayersData, SessionCard, SessionInfo } from "./style";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
+import PlayersTable from "../../components/PlayerTable";
 
 type SessionProps = {
     id: string;
@@ -27,6 +28,29 @@ const SessionDetail = () => {
     const [session, setSession] = useState<SessionProps | null>(null);
 
     checkToken();
+
+    const playersData = [
+        {
+            id: 1,
+            name: "DEV001",
+            stats: {
+                teamwork: "33.56",
+                communication: "40.23",
+                timeManagement: "70.00"
+            },
+            score: "164.08"
+        },
+        {
+            id: 2,
+            name: "DEV002",
+            stats: {
+                teamwork: "53.56",
+                communication: "40.23",
+                timeManagement: "70.00"
+            },
+            score: "164.08"
+        }
+    ];
 
     useEffect(() => {
         const fetchSession = async () => {
@@ -59,9 +83,9 @@ const SessionDetail = () => {
 
                     <Content>
 
-                        <div style={{ textAlign: "center", paddingBlock: "2rem" }}>
+                        <CenteredTitle>
                             <Title name="INFORMAÇÕES DA SESSÃO" fontSize="2rem" color="#FFFFFF" />
-                        </div>
+                        </CenteredTitle>
 
                         <SessionCard>
                             <SessionInfo><strong>Código:</strong> {session.session_code}</SessionInfo>
@@ -84,6 +108,13 @@ const SessionDetail = () => {
                     </ExportData>
 
                 </HeaderContent>
+
+
+                <PlayersData>
+                    <PlayersTable players={playersData} />
+                </PlayersData>
+
+
 
             </Container>
 
