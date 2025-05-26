@@ -32,7 +32,6 @@ export const CenteredTitle = styled.div`
   }
 `;
 
-
 export const HeaderContent = styled.div`
   display: flex;
   flex-direction: row;
@@ -51,11 +50,10 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;  
-  justify-content: end;
+  justify-content: flex-start;
   min-width: 0; 
   max-width: 100%;
 `;
-
 
 export const ExportData = styled.div`
   flex: 1;

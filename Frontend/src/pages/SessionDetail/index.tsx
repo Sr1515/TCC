@@ -22,35 +22,48 @@ type SessionProps = {
     status: string;
 };
 
+
+
 const SessionDetail = () => {
     const { id } = useParams();
     const { checkToken, tokenState } = useContext(AuthContext);
     const [session, setSession] = useState<SessionProps | null>(null);
+    const [players, setPlayers] = useState([]);
 
     checkToken();
 
-    const playersData = [
-        {
-            id: 1,
-            name: "DEV001",
-            stats: {
-                teamwork: "33.56",
-                communication: "40.23",
-                timeManagement: "70.00"
-            },
-            score: "164.08"
-        },
-        {
-            id: 2,
-            name: "DEV002",
-            stats: {
-                teamwork: "53.56",
-                communication: "40.23",
-                timeManagement: "70.00"
-            },
-            score: "164.08"
-        }
-    ];
+    useEffect(() => {
+        const fetchPlayers = async () => {
+            if (!tokenState || !id) return;
+
+            try {
+                const response = await api.get(`players/by-session/${id}/`, {
+                    headers: {
+                        Authorization: `Bearer ${tokenState}`
+                    }
+                });
+
+                const formattedPlayers = response.data.map((player: any) => ({
+                    id: player.id,
+                    name: player.player_name,
+                    score: player.score,
+                    stats: {
+                        teamwork: player.teamwork,
+                        communication: player.communication,
+                        timeManagement: player.time_management
+                    }
+                }));
+
+                setPlayers(formattedPlayers);
+
+            } catch (error) {
+                console.error("Erro ao buscar jogadores da sessão:", error);
+            }
+        };
+
+        fetchPlayers();
+    }, [id, tokenState]);
+
 
     useEffect(() => {
         const fetchSession = async () => {
@@ -111,7 +124,7 @@ const SessionDetail = () => {
 
 
                 <PlayersData>
-                    <PlayersTable players={playersData} />
+                    <PlayersTable players={players} />
                 </PlayersData>
 
 

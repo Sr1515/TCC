@@ -11,7 +11,9 @@ type SessionCardProps = {
     players?: number;
     duration?: string;
     color?: string;
+    onDelete?: (id: string) => void;
 };
+
 
 const Card: React.FC<SessionCardProps> = ({
     id,
@@ -20,12 +22,19 @@ const Card: React.FC<SessionCardProps> = ({
     game,
     players,
     duration,
-    color = "#8C92AC"
+    color = "#8C92AC",
+    onDelete
 }) => {
     const navigate = useNavigate();
 
     const handleDetailsClick = () => {
         navigate(`/sessions/${id}`);
+    };
+
+    const handleDeleteClick = () => {
+        if (onDelete) {
+            onDelete(id);
+        }
     };
 
     return (
@@ -46,6 +55,7 @@ const Card: React.FC<SessionCardProps> = ({
                     fontSize="32px"
                     backgroundColor="#D7263D"
                     color="#EDF0F4"
+                    onClick={handleDeleteClick}
                 />
 
                 <Button

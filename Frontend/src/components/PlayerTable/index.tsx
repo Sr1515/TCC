@@ -7,7 +7,7 @@ interface PlayerStats {
 }
 
 interface Player {
-    id: number;
+    id: string;
     name: string;
     stats: PlayerStats;
     score: string;

@@ -53,6 +53,23 @@ const Sessions = () => {
         }
     }, [tokenState])
 
+    const handleDeleteSession = async (sessionId: string) => {
+        if (!tokenState) return;
+
+        try {
+            await api.delete(`sessions/${sessionId}/`, {
+                headers: {
+                    Authorization: `Bearer ${tokenState}`
+                }
+            });
+
+            setMySessions((prev) => prev.filter((session) => session.id !== sessionId));
+        } catch (error) {
+            console.error("Erro ao deletar a sessão:", error);
+        }
+    };
+
+
 
     return (
         <>
@@ -69,6 +86,7 @@ const Sessions = () => {
                         game={session.game_title}
                         sessionCode={session.session_code}
                         players={session.max_participantes}
+                        onDelete={handleDeleteSession}
                     />
                 ))}
 
