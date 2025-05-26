@@ -1,6 +1,10 @@
 from rest_framework import viewsets, permissions
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from .models import CustomUser, Game, Player, Session, BatchResult
 from .serializers import CustomUserSerializer, GameSerializer, PlayerSerializer, SessionSerializer, BatchResultSerializer
+from rest_framework import status
+from uuid import UUID
 
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -23,6 +27,19 @@ class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=False, methods=["get"], url_path="by-session/(?P<session_id>[0-9a-f-]{36})")
+    def by_session(self, request, session_id=None):
+        try:
+            session_uuid = UUID(session_id)  
+
+            players = Player.objects.filter(session_id=session_uuid)
+            serializer = self.get_serializer(players, many=True)
+            return Response(serializer.data)
+        except ValueError:
+            return Response({'error': 'UUID inválido.'}, status=400)
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
 
 class SessionViewSet(viewsets.ModelViewSet):
     queryset = Session.objects.all() 
