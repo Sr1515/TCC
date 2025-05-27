@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { api } from "../../api/axios";
@@ -8,10 +8,12 @@ import Title from "../../components/Title";
 import Button from "../../components/Button";
 import PlayersTable from "../../components/PlayerTable";
 
+import { gerarPDF } from "../../utils/pdfExport";
+
 type SessionProps = {
     id: string;
     game: string;
-    game_title: string;
+    game_title: string
     organizer: string;
     organizer_username: string;
     session_code: string;
@@ -23,12 +25,12 @@ type SessionProps = {
 };
 
 
-
 const SessionDetail = () => {
     const { id } = useParams();
     const { checkToken, tokenState } = useContext(AuthContext);
     const [session, setSession] = useState<SessionProps | null>(null);
     const [players, setPlayers] = useState([]);
+    const contentRef = useRef<HTMLDivElement>(null);
 
     checkToken();
 
@@ -90,7 +92,8 @@ const SessionDetail = () => {
         <>
             <NavBar />
 
-            <Container>
+
+            <Container ref={contentRef}>
 
                 <HeaderContent>
 
@@ -117,7 +120,7 @@ const SessionDetail = () => {
                             <Title name="EXPORTAR" fontSize="2rem" color="#FFFFFF" />
                         </div>
 
-                        <Button name="PDF" backgroundColor="#FF6567" width="13rem" borderRadius="2rem" height="4rem" />
+                        <Button name="PDF" backgroundColor="#FF6567" width="13rem" borderRadius="2rem" height="4rem" onClick={() => gerarPDF(contentRef.current!, `sessao-${session.session_code}.pdf`)} />
                     </ExportData>
 
                 </HeaderContent>
@@ -126,8 +129,6 @@ const SessionDetail = () => {
                 <PlayersData>
                     <PlayersTable players={players} />
                 </PlayersData>
-
-
 
             </Container>
 

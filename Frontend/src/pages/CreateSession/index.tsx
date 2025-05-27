@@ -59,25 +59,27 @@ const CreateSession = () => {
     ];
 
     const fetchGames = async () => {
-
-        if (!tokenState) {
-            return;
-        }
+        if (!tokenState) return;
 
         try {
             const response = await api.get('games/', {
                 headers: {
                     Authorization: `Bearer ${tokenState}`
                 }
-            })
+            });
 
-            setAllGames(response.data);
+            const games = response.data;
+            setAllGames(games);
+
+            if (games.length > 0 && !selectedGame) {
+                setSelectedGame(games[0]);
+            }
 
         } catch (error) {
-            console.log(`Error: ${error}`)
+            console.log(`Error: ${error}`);
         }
+    };
 
-    }
 
     const handleGameChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedGameName = e.target.value;

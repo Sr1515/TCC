@@ -28,6 +28,7 @@ const Card: React.FC<SessionCardProps> = ({
     const navigate = useNavigate();
 
     const handleDetailsClick = () => {
+        if (status !== "concluida") return;
         navigate(`/sessions/${id}`);
     };
 
@@ -58,16 +59,19 @@ const Card: React.FC<SessionCardProps> = ({
                     onClick={handleDeleteClick}
                 />
 
-                <Button
-                    name="Ver detalhes"
-                    height="4rem"
-                    width="70%"
-                    fontSize="32px"
-                    backgroundColor="#3D8361"
-                    color="#EDF0F4"
-                    onClick={handleDetailsClick}
-                />
+                {status === "concluida" && (
+                    <Button
+                        name="Ver detalhes"
+                        height="4rem"
+                        width="70%"
+                        fontSize="32px"
+                        backgroundColor="#3D8361"
+                        color="#EDF0F4"
+                        onClick={handleDetailsClick}
+                    />
+                )}
             </CardFooter>
+
         </Container>
     );
 };
