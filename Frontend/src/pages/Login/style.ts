@@ -54,8 +54,10 @@ export const ErrorMessage = styled.span`
   display: flex;
   text-align: center;
   align-items: center;
-  color: red;
+  color: white;
+  font-family: 'Irish Grover', cursive;
   padding-top: 10px;
   font-size: 1.2rem;
   width: 100%;  
+  
 `;

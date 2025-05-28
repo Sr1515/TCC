@@ -77,6 +77,7 @@ const Login = () => {
                     <Title name="Não tem conta?" color="white" fontSize="28px" />
                     <Title name="Cadastre-se" color="#FCA311" fontSize="28px" onClick={() => navigate("/signup")} />
                 </FooterContainer>
+
             </Container>
 
             {popupMensagem && (

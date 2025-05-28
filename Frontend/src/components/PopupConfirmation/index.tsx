@@ -7,7 +7,7 @@ type PopupConfirmationProps = {
     onCancel: () => void
 };
 
-const PopupConfirmacao: React.FC<PopupConfirmationProps> = ({
+const PopupConfirmation: React.FC<PopupConfirmationProps> = ({
     message,
     onConfirm,
     onCancel,
@@ -29,4 +29,4 @@ const PopupConfirmacao: React.FC<PopupConfirmationProps> = ({
     );
 };
 
-export default PopupConfirmacao;
+export default PopupConfirmation;

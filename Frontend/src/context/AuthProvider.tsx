@@ -39,8 +39,9 @@ export function AuthProviderContext({ children }: IProps) {
         setTokenState(null);
         localStorage.removeItem('token');
         delete axios.defaults.headers.common.Authorization;
-        navigate('/', { replace: true });
     }
+
+
 
     useEffect(() => {
         const tokenStorage = localStorage.getItem('token');

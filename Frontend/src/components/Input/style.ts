@@ -33,15 +33,16 @@ export const InputField = styled.input`
   height: 4rem;
   padding-left: 90px;
   border: none;
-  border-bottom: 3px solid #101318;
+  border-radius: 1rem;
+  border: 3px solid #1C1C1E;
   outline: none;
   font-family: 'Irish Grover', cursive;
   font-size: 36px;
-  color: whitesmoke;
-  background: transparent;
+  color: #1C1C1E;
+  background: #D3D3D3;
 
   &:focus {
-    border-bottom: 2px solid whitesmoke;
+    border: 2px solid whitesmoke;
   }
 
   @media (max-width: 800px) {
@@ -62,7 +63,7 @@ export const IconWrapper = styled.div`
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
-  color: white;
+  color: black;
   pointer-events: none; 
   padding-left: 30px;
 `;

@@ -7,13 +7,13 @@ import { CenteredTitle, Container, Content, ExportData, HeaderContent, PlayersDa
 import Title from "../../components/Title";
 import Button from "../../components/Button";
 import PlayersTable from "../../components/PlayerTable";
-
 import { gerarPDF } from "../../utils/pdfExport";
+import PopupMessage from "../../components/PopupMessage";
 
 type SessionProps = {
     id: string;
     game: string;
-    game_title: string
+    game_title: string;
     organizer: string;
     organizer_username: string;
     session_code: string;
@@ -24,12 +24,12 @@ type SessionProps = {
     status: string;
 };
 
-
 const SessionDetail = () => {
     const { id } = useParams();
     const { checkToken, tokenState } = useContext(AuthContext);
     const [session, setSession] = useState<SessionProps | null>(null);
     const [players, setPlayers] = useState([]);
+    const [pdfSuccessMessage, setPdfSuccessMessage] = useState<string | null>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
     checkToken();
@@ -37,7 +37,6 @@ const SessionDetail = () => {
     useEffect(() => {
         const fetchPlayers = async () => {
             if (!tokenState || !id) return;
-
             try {
                 const response = await api.get(`players/by-session/${id}/`, {
                     headers: {
@@ -57,7 +56,6 @@ const SessionDetail = () => {
                 }));
 
                 setPlayers(formattedPlayers);
-
             } catch (error) {
                 console.error("Erro ao buscar jogadores da sessão:", error);
             }
@@ -66,11 +64,9 @@ const SessionDetail = () => {
         fetchPlayers();
     }, [id, tokenState]);
 
-
     useEffect(() => {
         const fetchSession = async () => {
             if (!tokenState || !id) return;
-
             try {
                 const response = await api.get(`sessions/${id}/`, {
                     headers: {
@@ -86,19 +82,22 @@ const SessionDetail = () => {
         fetchSession();
     }, [id, tokenState]);
 
+    const handleDownloadPDF = () => {
+        if (!session) return;
+        gerarPDF(contentRef.current!, `sessao-${session.session_code}.pdf`);
+        setPdfSuccessMessage("PDF exportado com sucesso!");
+        setTimeout(() => setPdfSuccessMessage(null), 3000);
+    };
+
     if (!session) return <p>Carregando detalhes da sessão...</p>;
 
     return (
         <>
             <NavBar />
 
-
             <Container ref={contentRef}>
-
                 <HeaderContent>
-
                     <Content>
-
                         <CenteredTitle>
                             <Title name="INFORMAÇÕES DA SESSÃO" fontSize="2rem" color="#FFFFFF" />
                         </CenteredTitle>
@@ -111,27 +110,35 @@ const SessionDetail = () => {
                             <SessionInfo><strong>Duração:</strong> {session.duration} minutos</SessionInfo>
                             <SessionInfo><strong>Criado em:</strong> {new Date(session.created_at).toLocaleString()}</SessionInfo>
                         </SessionCard>
-
                     </Content>
 
                     <ExportData>
-
                         <div style={{ textAlign: "center", paddingBlock: "2rem" }}>
                             <Title name="EXPORTAR" fontSize="2rem" color="#FFFFFF" />
                         </div>
-
-                        <Button name="PDF" backgroundColor="#FF6567" width="13rem" borderRadius="2rem" height="4rem" onClick={() => gerarPDF(contentRef.current!, `sessao-${session.session_code}.pdf`)} />
+                        <Button
+                            name="PDF"
+                            backgroundColor="#FF6567"
+                            width="13rem"
+                            borderRadius="2rem"
+                            height="4rem"
+                            onClick={handleDownloadPDF}
+                        />
                     </ExportData>
-
                 </HeaderContent>
-
 
                 <PlayersData>
                     <PlayersTable players={players} />
                 </PlayersData>
-
             </Container>
 
+            {pdfSuccessMessage && (
+                <PopupMessage
+                    message={pdfSuccessMessage}
+                    onClose={() => setPdfSuccessMessage(null)}
+                    duration={3000}
+                />
+            )}
         </>
     );
 };

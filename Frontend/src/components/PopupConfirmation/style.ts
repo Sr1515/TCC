@@ -16,21 +16,28 @@ export const Overlay = styled.div`
 
 export const PopupContainer = styled.div`
   background: white;
-  padding: 2rem;
+  padding: 4rem;
   border-radius: 12px;
   min-width: 320px;
   text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
 
 export const ButtonGroup = styled.div`
   margin-top: 1.5rem;
+  gap: 4rem;
   display: flex;
   justify-content: space-around;
 `;
 
 export const Button = styled.button<{ tipo: 'confirmar' | 'cancelar' }>`
-  padding: 0.5rem 1.5rem;
+  padding: 2rem 1.5rem;
   border: none;
+  height: 5rem;
+  width: 10rem;
+  font-size: 1rem;
+  font-weight: bold;
   color: white;
   border-radius: 8px;
   cursor: pointer;

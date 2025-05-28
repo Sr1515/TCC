@@ -19,11 +19,9 @@ import {
 } from "./style";
 import { AuthContext } from "../../context/AuthProvider";
 import { api } from "../../api/axios";
-
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-
-
+import PopupMessage from "../../components/PopupMessage";
 
 type Game = {
     id: string;
@@ -45,9 +43,9 @@ const CreateSession = () => {
     const [selectedGame, setSelectedGame] = useState<Game | null>(null);
     const [selectedTime, setSelectedTime] = useState<number | null>(null);
     const [allGames, setAllGames] = useState<Game[] | null>(null);
-    const { tokenState } = useContext(AuthContext);
-    const { checkToken } = useContext(AuthContext);
+    const [popupMessage, setPopupMessage] = useState<string | null>(null);
 
+    const { tokenState, checkToken } = useContext(AuthContext);
     const navigate = useNavigate();
 
     checkToken();
@@ -63,9 +61,7 @@ const CreateSession = () => {
 
         try {
             const response = await api.get('games/', {
-                headers: {
-                    Authorization: `Bearer ${tokenState}`
-                }
+                headers: { Authorization: `Bearer ${tokenState}` }
             });
 
             const games = response.data;
@@ -74,12 +70,10 @@ const CreateSession = () => {
             if (games.length > 0 && !selectedGame) {
                 setSelectedGame(games[0]);
             }
-
         } catch (error) {
             console.log(`Error: ${error}`);
         }
     };
-
 
     const handleGameChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedGameName = e.target.value;
@@ -97,22 +91,7 @@ const CreateSession = () => {
     };
 
     const onSubmit = async () => {
-
-        if (!tokenState) {
-            return;
-        }
-
-        if (!playersCount) {
-            return;
-        }
-
-        if (!selectedGame) {
-            return;
-        }
-
-        if (!selectedGame) {
-            return;
-        }
+        if (!tokenState || !playersCount || !selectedGame || !selectedTime) return;
 
         try {
             const decoded = jwtDecode<TokenPayload>(tokenState);
@@ -123,46 +102,41 @@ const CreateSession = () => {
                 game: selectedGame.id,
                 max_participantes: playersCount,
                 duration: selectedTime
-            }
+            };
 
             const response = await api.post('sessions/', session, {
-                headers:
-                    { Authorization: `Bearer ${tokenState}` }
+                headers: { Authorization: `Bearer ${tokenState}` }
             });
 
-            if (response.status == 201) {
-                navigate('/home', { replace: true });
+            if (response.status === 201) {
+                setPopupMessage("Sessão criada com sucesso!");
+
+                setTimeout(() => {
+                    navigate('/home', { replace: true });
+                }, 2000);
             }
 
-
         } catch (error) {
-            console.log(`Error: ${error}`)
+            console.log(`Error: ${error}`);
         }
-    }
+    };
 
     useEffect(() => {
         fetchGames();
-    }, [tokenState])
-
+    }, [tokenState]);
 
     return (
         <>
             <NavBar />
 
             <MainContainer>
-
                 <ContentWrapper>
-
                     <Title name="CRIAR SESSÃO" />
 
                     <ColumnsContainer>
-
                         <OptionsContainer>
-
                             <InfoPlayers>
-
                                 <Title name="JOGADORES" fontSize="36px" />
-
                                 <PlayerInput
                                     type="number"
                                     min="0"
@@ -170,13 +144,10 @@ const CreateSession = () => {
                                     value={playersCount}
                                     onChange={handlePlayerCountChange}
                                 />
-
                             </InfoPlayers>
 
                             <InfoTime>
-
                                 <Title name="TEMPO" fontSize="36px" />
-
                                 <TimeOptions>
                                     {timeOptions.map((option) => (
                                         <TimeOption
@@ -188,19 +159,18 @@ const CreateSession = () => {
                                         </TimeOption>
                                     ))}
                                 </TimeOptions>
-
                             </InfoTime>
 
-                            <Button name="CRIAR SESSÃO" backgroundColor="#3D8361" onClick={onSubmit} />
-
+                            <Button
+                                name="CRIAR SESSÃO"
+                                backgroundColor="#3D8361"
+                                onClick={onSubmit}
+                            />
                         </OptionsContainer>
 
                         <InfoContainer>
-
                             <InfoGames>
-
                                 <Title name="JOGOS" fontSize="36px" />
-
                                 <GameSelect onChange={handleGameChange}>
                                     {allGames?.map((game, index) => (
                                         <option key={index} value={game.name}>
@@ -210,23 +180,24 @@ const CreateSession = () => {
                                 </GameSelect>
 
                                 {selectedGame && selectedGame.description && (
-
                                     <GameDescriptionBox>
                                         <Title name={selectedGame.name} fontSize="30px" />
                                         {selectedGame.description}
                                     </GameDescriptionBox>
-
                                 )}
-
                             </InfoGames>
-
                         </InfoContainer>
-
                     </ColumnsContainer>
-
                 </ContentWrapper>
-
             </MainContainer>
+
+            {popupMessage && (
+                <PopupMessage
+                    message={popupMessage}
+                    onClose={() => setPopupMessage(null)}
+                    duration={2000}
+                />
+            )}
         </>
     );
 };
