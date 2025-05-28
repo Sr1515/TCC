@@ -8,13 +8,14 @@ import Title from "../../components/Title";
 import { Container, FooterContainer, ErrorMessage } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import PopupMessage from "../../components/PopupMessage";
 
 import { signUpSchema, SignUpData } from "../../schemas/signUpSchema";
 import { api } from "../../api/axios";
 
 const SignUp = () => {
-    const [signUpError, setSignUpError] = useState("");
     const navigate = useNavigate();
+    const [popupMensagem, setPopupMensagem] = useState<string | null>(null);
 
     const {
         register,
@@ -26,61 +27,74 @@ const SignUp = () => {
 
     const onSubmit = async (data: SignUpData) => {
         try {
-            setSignUpError("");
             const response = await api.post("users/", data);
 
             if (response.status === 201) {
-                navigate("/");
+                setPopupMensagem("Cadastro realizado com sucesso!");
+                setTimeout(() => {
+                    setPopupMensagem(null);
+                    navigate("/");
+                }, 2500);
             }
         } catch (error) {
-            setSignUpError("Falha ao cadastrar. Tente novamente!");
+            setPopupMensagem("Falha ao cadastrar. Tente novamente!");
+            setTimeout(() => {
+                setPopupMensagem(null);
+            }, 3000);
         }
     };
 
     return (
-        <Container>
+        <>
+            <Container>
+                <Title name="Cadastrar" />
 
-            <Title name="Cadastrar" />
+                <div>
+                    <Input
+                        icon={FaUser}
+                        type="email"
+                        placeholder="Digite seu e-mail"
+                        {...register("email")}
+                    />
+                    {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+                </div>
 
-            <div>
-                <Input
-                    icon={FaUser}
-                    type="email"
-                    placeholder="Digite seu e-mail"
-                    {...register("email")}
+                <div>
+                    <Input
+                        icon={FaUser}
+                        type="text"
+                        placeholder="Nome de usuário"
+                        {...register("username")}
+                    />
+                    {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
+                </div>
+
+                <div>
+                    <Input
+                        icon={FaLock}
+                        type="password"
+                        placeholder="Digite sua senha"
+                        {...register("password")}
+                    />
+                    {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+                </div>
+
+                <Button name="Cadastrar" onClick={handleSubmit(onSubmit)} width="23rem" />
+
+                <FooterContainer>
+                    <Title name="Já possui conta?" color="whitesmoke" fontSize="28px" />
+                    <Title name="Entrar" color="#FCA311" fontSize="28px" onClick={() => navigate("/")} />
+                </FooterContainer>
+            </Container>
+
+            {popupMensagem && (
+                <PopupMessage
+                    message={popupMensagem}
+                    onClose={() => setPopupMensagem(null)}
+                    duration={3000}
                 />
-                {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
-            </div>
-
-            <div>
-                <Input
-                    icon={FaUser}
-                    type="text"
-                    placeholder="Nome de usuário"
-                    {...register("username")}
-                />
-                {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
-            </div>
-
-            <div>
-                <Input
-                    icon={FaLock}
-                    type="password"
-                    placeholder="Digite sua senha"
-                    {...register("password")}
-                />
-                {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
-            </div>
-
-            {signUpError && <ErrorMessage>{signUpError}</ErrorMessage>}
-
-            <Button name="Cadastrar" onClick={handleSubmit(onSubmit)} width="23rem" />
-
-            <FooterContainer>
-                <Title name="Já possui conta?" color="whitesmoke" fontSize="28px" />
-                <Title name="Entrar" color="#FCA311" fontSize="28px" onClick={() => navigate("/")} />
-            </FooterContainer>
-        </Container>
+            )}
+        </>
     );
 };
 

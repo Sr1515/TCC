@@ -20,8 +20,7 @@ export function AuthProviderContext({ children }: IProps) {
     const [tokenState, setTokenState] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    async function login(email: string, password: string) {
-
+    async function login(email: string, password: string): Promise<void> {
         try {
             const response = await api.post('token/', { email, password });
             const { access } = response.data;
@@ -29,7 +28,6 @@ export function AuthProviderContext({ children }: IProps) {
             localStorage.setItem('token', access);
             axios.defaults.headers.common.Authorization = `Bearer ${access}`;
             setTokenState(access);
-            navigate('/home', { replace: true });
 
         } catch (error) {
             console.error('Erro ao fazer login:', error);

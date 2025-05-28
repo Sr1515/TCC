@@ -4,9 +4,9 @@ import { Container } from "./style";
 import { AuthContext } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
+
 const Home = () => {
-    const { logout } = useContext(AuthContext);
-    const { checkToken } = useContext(AuthContext);
+    const { logout, checkToken } = useContext(AuthContext);
     const navigate = useNavigate();
 
     checkToken();
@@ -34,6 +34,8 @@ const Home = () => {
                 width="60rem"
                 onClick={logout}
             />
+
+
         </Container>
     );
 };
