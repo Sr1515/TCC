@@ -48,23 +48,35 @@ export const InputField = styled.input`
   @media (max-width: 800px) {
     font-size: 28px;
     height: 3.5rem;
-    padding-left: 36px;
+    padding-left: 60px;
   }
 
   @media (max-width: 480px) {
     font-size: 24px;
     height: 3rem;
-    padding-left: 32px;
+    padding-left: 52px;
   }
 `;
 
+
 export const IconWrapper = styled.div`
   position: absolute;
-  left: 20px;
+  left: 24px;
   top: 50%;
   transform: translateY(-50%);
   color: black;
-  pointer-events: none; 
-  padding-left: 30px;
+  pointer-events: none;
+  font-size: 32px; 
+
+  @media (max-width: 800px) {
+    left: 16px;
+    font-size: 24px;
+  }
+
+  @media (max-width: 480px) {
+    left: 12px;
+    font-size: 20px;
+  }
 `;
+
 

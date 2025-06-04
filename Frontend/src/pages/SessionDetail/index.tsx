@@ -3,12 +3,13 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { api } from "../../api/axios";
 import NavBar from "../../components/Navbar";
-import { CenteredTitle, Container, Content, ExportData, HeaderContent, PlayersData, SessionCard, SessionInfo } from "./style";
+import { CenteredTitle, ChartsWrapper, Container, Content, ExportData, HeaderContent, PlayersData, SessionCard, SessionInfo } from "./style";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
 import PlayersTable from "../../components/PlayerTable";
 import { gerarPDF } from "../../utils/pdfExport";
 import PopupMessage from "../../components/PopupMessage";
+import SkillChart from "../../components/SkillChart";
 
 type SessionProps = {
     id: string;
@@ -30,6 +31,7 @@ const SessionDetail = () => {
     const [session, setSession] = useState<SessionProps | null>(null);
     const [players, setPlayers] = useState([]);
     const [pdfSuccessMessage, setPdfSuccessMessage] = useState<string | null>(null);
+
     const contentRef = useRef<HTMLDivElement>(null);
 
     checkToken();
@@ -82,11 +84,22 @@ const SessionDetail = () => {
         fetchSession();
     }, [id, tokenState]);
 
-    const handleDownloadPDF = () => {
+    const handleDownloadPDF = async () => {
         if (!session) return;
-        gerarPDF(contentRef.current!, `sessao-${session.session_code}.pdf`);
-        setPdfSuccessMessage("PDF exportado com sucesso!");
-        setTimeout(() => setPdfSuccessMessage(null), 3000);
+
+        setPdfSuccessMessage("Preparando PDF...");
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        try {
+            await gerarPDF(contentRef.current!, `sessao-${session.session_code}.pdf`);
+            setPdfSuccessMessage("PDF exportado com sucesso!");
+        } catch (error) {
+            setPdfSuccessMessage("Erro ao gerar PDF");
+            console.error(error);
+        } finally {
+            setTimeout(() => setPdfSuccessMessage(null), 3000);
+        }
     };
 
     if (!session) return <p>Carregando detalhes da sessão...</p>;
@@ -130,7 +143,19 @@ const SessionDetail = () => {
                 <PlayersData>
                     <PlayersTable players={players} />
                 </PlayersData>
+
+
+                {players.length > 0 && (
+                    <ChartsWrapper >
+                        <SkillChart players={players} skill="score" />
+                        <SkillChart players={players} skill="teamwork" />
+                        <SkillChart players={players} skill="communication" />
+                        <SkillChart players={players} skill="timeManagement" />
+                    </ChartsWrapper>
+                )}
+
             </Container>
+
 
             {pdfSuccessMessage && (
                 <PopupMessage

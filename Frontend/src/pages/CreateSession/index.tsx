@@ -15,7 +15,8 @@ import {
     OptionsContainer,
     InfoTime,
     InfoPlayers,
-    InfoGames
+    InfoGames,
+    ButtonContainer
 } from "./style";
 import { AuthContext } from "../../context/AuthProvider";
 import { api } from "../../api/axios";
@@ -161,11 +162,7 @@ const CreateSession = () => {
                                 </TimeOptions>
                             </InfoTime>
 
-                            <Button
-                                name="CRIAR SESSÃO"
-                                backgroundColor="#3D8361"
-                                onClick={onSubmit}
-                            />
+
                         </OptionsContainer>
 
                         <InfoContainer>
@@ -188,6 +185,15 @@ const CreateSession = () => {
                             </InfoGames>
                         </InfoContainer>
                     </ColumnsContainer>
+
+                    <ButtonContainer>
+                        <Button
+                            name="CRIAR SESSÃO"
+                            backgroundColor="#3D8361"
+                            onClick={onSubmit}
+                        />
+                    </ButtonContainer>
+
                 </ContentWrapper>
             </MainContainer>
 

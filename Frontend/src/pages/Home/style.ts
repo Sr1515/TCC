@@ -23,5 +23,10 @@ export const Container = styled.div`
     height: 100vh; 
     width: 100%;    
     background-color: #5B6475;
+
+    @media (max-width: 768px) {
+        padding: 3rem;
+        gap: 1rem;
+  }
 `;
 

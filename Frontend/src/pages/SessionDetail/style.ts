@@ -12,63 +12,40 @@ export const Container = styled.div`
 `;
 
 export const CenteredTitle = styled.div`
-  width: 80%;
-  margin: 0 auto;
-  padding-block: 2rem;
+  width: 100%;
   text-align: center;
-  padding-left: 10rem;
-
-  @media (max-width: 1024px) {
-    padding-left: 5rem;
-  }
-
-  @media (max-width: 768px) {
-    padding-left: 2rem;
-  }
-
-  @media (max-width: 480px) {
-    padding-left: 0;
-    width: 100%;
-  }
+  padding: 2rem 0;
 `;
+
 
 export const HeaderContent = styled.div`
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  gap: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4rem;
   width: 100%;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-  }
+  margin-bottom: 2rem;
 `;
+
 
 export const Content = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: end;  
-  justify-content: flex-start;
-  min-width: 0; 
-  max-width: 100%;
-`;
-
-export const ExportData = styled.div`
-  flex: 1;
-  min-width: 0;
-  max-width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-top: 2rem;
-  }
+  width: 100%;
+  max-width: 500px;
 `;
+
+export const ExportData = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+`;
+
+
 
 export const SessionInfo = styled.p`
   font-size: 1rem;
@@ -83,15 +60,47 @@ export const SessionInfo = styled.p`
 
 export const SessionCard = styled.div`
   background-color: #D9D9D9;
-  align-content: end;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 2rem;
-  width: 80%;
+  width: 100%; 
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    width: 100%; 
+  }
 `;
+
 
 export const PlayersData = styled.div`
   width: 100%;
   margin: 0 auto;
 `;
+
+
+export const ChartsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8rem;
+  margin-top: 2rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    gap: 4rem; 
+  }
+
+  @media (max-width: 480px) {
+    gap: 2rem; 
+    padding: 0 1rem; 
+  }
+
+  @media print {
+    .echarts-instance {
+      width: 100% !important;
+      height: 300px !important;
+    }
+  }
+`;
+
+

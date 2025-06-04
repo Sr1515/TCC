@@ -11,9 +11,11 @@ export const gerarPDF = async (
 
     const wrapper = document.createElement("div");
     wrapper.style.position = "fixed";
-    wrapper.style.top = "0";
-    wrapper.style.left = "0";
-    wrapper.style.width = "1500px";
+    wrapper.style.top = "50%";
+    wrapper.style.left = "50%";
+    wrapper.style.transform = "translate(-50%, -50%)";
+    wrapper.style.width = "80%";
+    wrapper.style.maxWidth = "1500px";
     wrapper.style.zIndex = "-1";
     wrapper.style.overflow = "visible";
     wrapper.style.background = "white";
@@ -24,31 +26,28 @@ export const gerarPDF = async (
 
     try {
         const canvas = await html2canvas(clone, {
-            scale: 2,
+            scale: 1.5,
             useCORS: true,
             windowWidth: 1500
         });
 
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
+        const imgData = canvas.toDataURL("image/jpeg", 0.7);
 
+        const pdf = new jsPDF("p", "mm", "a4");
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
 
         const imgWidth = pageWidth;
         const imgHeight = (canvas.height * pageWidth) / canvas.width;
 
-        let heightLeft = imgHeight;
         let position = 0;
+        let heightLeft = imgHeight;
 
         while (heightLeft > 0) {
-            pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+            pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
             heightLeft -= pageHeight;
             position -= pageHeight;
-
-            if (heightLeft > 0) {
-                pdf.addPage();
-            }
+            if (heightLeft > 0) pdf.addPage();
         }
 
         pdf.save(filename);
