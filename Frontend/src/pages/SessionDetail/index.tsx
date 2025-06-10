@@ -37,8 +37,11 @@ const SessionDetail = () => {
     checkToken();
 
     useEffect(() => {
+
         const fetchPlayers = async () => {
+
             if (!tokenState || !id) return;
+
             try {
                 const response = await api.get(`players/by-session/${id}/`, {
                     headers: {
@@ -58,17 +61,22 @@ const SessionDetail = () => {
                 }));
 
                 setPlayers(formattedPlayers);
+
             } catch (error) {
                 console.error("Erro ao buscar jogadores da sessão:", error);
             }
         };
 
         fetchPlayers();
+
     }, [id, tokenState]);
 
     useEffect(() => {
+
         const fetchSession = async () => {
+
             if (!tokenState || !id) return;
+
             try {
                 const response = await api.get(`sessions/${id}/`, {
                     headers: {
@@ -76,15 +84,18 @@ const SessionDetail = () => {
                     }
                 });
                 setSession(response.data);
+
             } catch (error) {
                 console.error("Erro ao buscar detalhes da sessão:", error);
             }
         };
 
         fetchSession();
+
     }, [id, tokenState]);
 
     const handleDownloadPDF = async () => {
+
         if (!session) return;
 
         setPdfSuccessMessage("Preparando PDF...");
@@ -109,8 +120,11 @@ const SessionDetail = () => {
             <NavBar />
 
             <Container ref={contentRef}>
+
                 <HeaderContent>
+
                     <Content>
+
                         <CenteredTitle>
                             <Title name="INFORMAÇÕES DA SESSÃO" fontSize="2rem" color="#FFFFFF" />
                         </CenteredTitle>
@@ -138,12 +152,12 @@ const SessionDetail = () => {
                             onClick={handleDownloadPDF}
                         />
                     </ExportData>
+
                 </HeaderContent>
 
                 <PlayersData>
                     <PlayersTable players={players} />
                 </PlayersData>
-
 
                 {players.length > 0 && (
                     <ChartsWrapper >
@@ -155,7 +169,6 @@ const SessionDetail = () => {
                 )}
 
             </Container>
-
 
             {pdfSuccessMessage && (
                 <PopupMessage

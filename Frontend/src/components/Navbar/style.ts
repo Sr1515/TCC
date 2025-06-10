@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const Container = styled.div<{ color: string; width: string; height: string }>`
     position: fixed;
     top: 0;

@@ -58,6 +58,7 @@ const CreateSession = () => {
     ];
 
     const fetchGames = async () => {
+
         if (!tokenState) return;
 
         try {
@@ -92,6 +93,7 @@ const CreateSession = () => {
     };
 
     const onSubmit = async () => {
+
         if (!tokenState || !playersCount || !selectedGame || !selectedTime) return;
 
         try {
@@ -131,6 +133,7 @@ const CreateSession = () => {
             <NavBar />
 
             <MainContainer>
+
                 <ContentWrapper>
                     <Title name="CRIAR SESSÃO" />
 

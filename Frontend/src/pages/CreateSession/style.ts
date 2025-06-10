@@ -50,7 +50,6 @@ export const OptionsContainer = styled.div`
   }
 `;
 
-
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;

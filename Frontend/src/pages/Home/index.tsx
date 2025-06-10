@@ -7,23 +7,25 @@ import PopupMessage from "../../components/PopupMessage";
 
 const Home = () => {
     const { logout, checkToken } = useContext(AuthContext);
+    const [popupMensagem, setPopupMensagem] = useState<string | null>(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const [popupMensagem, setPopupMensagem] = useState<string | null>(null);
 
     checkToken();
 
     const handleLogout = async () => {
+
         await logout();
         setPopupMensagem("Desconectado com sucesso.");
 
         setTimeout(() => {
             navigate("/", { replace: true });
         }, 2000);
+
     };
 
-
     useEffect(() => {
+
         if (location.state?.message) {
             setPopupMensagem(location.state.message);
             setTimeout(() => {

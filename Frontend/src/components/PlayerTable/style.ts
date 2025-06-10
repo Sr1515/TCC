@@ -42,6 +42,7 @@ export const TableCell = styled.td`
   text-align: center;
   font-weight: bold;
   width: 33.33%; 
+  font-size: 27px;
 `;
 
 export const TableRow = styled.tr``;

@@ -21,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
     backgroundColor = "#FCA311",
     borderRadius = "20px",
     onClick,
+
 }) => {
     return (
         <StyledButton
@@ -28,7 +29,6 @@ const Button: React.FC<ButtonProps> = ({
             onClick={onClick}>
 
             <h1 style={{ fontSize }}>{name}</h1>
-
         </StyledButton>
     );
 };

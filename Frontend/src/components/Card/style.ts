@@ -37,12 +37,13 @@ export const GameInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   text-align: start;
-  color: #1C1C1E;
+  color: #2D2D2D;
   font-family: 'Irish Grover', cursive;
   gap: 0.5rem;
 
   .highlight {
-    color: #D3D3D3;
+    color: #CFD8DC;
+    font-weight: bold;
   }
 
   @media (max-width: 768px) {

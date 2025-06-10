@@ -30,6 +30,7 @@ const Sessions = () => {
     checkToken();
 
     const fetchSessions = async () => {
+
         if (!tokenState) return;
 
         try {
@@ -53,6 +54,7 @@ const Sessions = () => {
     }, [tokenState]);
 
     const confirmDeleteSession = async () => {
+
         if (!tokenState || !sessionToDelete) return;
 
         try {

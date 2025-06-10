@@ -13,7 +13,9 @@ const NavBar: React.FC<TitleProps> = ({
     color = "#2F3542",
     width = "100%",
     height = "6rem"
+
 }) => {
+
     const navigate = useNavigate();
 
     const handleBack = () => {
@@ -25,6 +27,7 @@ const NavBar: React.FC<TitleProps> = ({
             <Button name="Voltar" height="4rem" width="10rem" onClick={handleBack} />
         </Container>
     );
+
 };
 
 export default NavBar;

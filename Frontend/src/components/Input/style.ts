@@ -58,7 +58,6 @@ export const InputField = styled.input`
   }
 `;
 
-
 export const IconWrapper = styled.div`
   position: absolute;
   left: 24px;

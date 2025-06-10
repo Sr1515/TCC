@@ -14,6 +14,7 @@ const Input: React.FC<InputProps> = ({
     placeholder = 'Digite algo...',
     type = 'text',
     ...props
+
 }) => {
     return (
 

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -15,13 +14,14 @@ export const Overlay = styled.div`
 `;
 
 export const PopupContainer = styled.div`
-  background: white;
+  background: #F5F7FA;
   padding: 4rem;
   border-radius: 12px;
   min-width: 320px;
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
+  font-family: 'Irish Grover', cursive;
 `;
 
 export const ButtonGroup = styled.div`
@@ -41,6 +41,7 @@ export const Button = styled.button<{ tipo: 'confirmar' | 'cancelar' }>`
   color: white;
   border-radius: 8px;
   cursor: pointer;
+  font-family: 'Irish Grover', cursive;
   background-color: ${({ tipo }) => (tipo === 'confirmar' ? '#28a745' : '#dc3545')};
 
   &:hover {

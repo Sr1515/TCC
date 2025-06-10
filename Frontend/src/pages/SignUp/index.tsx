@@ -14,8 +14,8 @@ import { signUpSchema, SignUpData } from "../../schemas/signUpSchema";
 import { api } from "../../api/axios";
 
 const SignUp = () => {
-    const navigate = useNavigate();
     const [popupMensagem, setPopupMensagem] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     const {
         register,
@@ -26,6 +26,7 @@ const SignUp = () => {
     });
 
     const onSubmit = async (data: SignUpData) => {
+
         try {
             const response = await api.post("users/", data);
 
@@ -47,6 +48,7 @@ const SignUp = () => {
     return (
         <>
             <Container>
+
                 <Title name="Cadastrar" />
 
                 <div>

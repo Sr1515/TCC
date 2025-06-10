@@ -8,6 +8,7 @@ type PopupMessageProps = {
 };
 
 const PopupMessage: React.FC<PopupMessageProps> = ({ message, onClose, duration = 3000 }) => {
+
     useEffect(() => {
         const timer = setTimeout(() => {
             onClose();
@@ -21,6 +22,7 @@ const PopupMessage: React.FC<PopupMessageProps> = ({ message, onClose, duration 
             <PopupContainer>{message}</PopupContainer>
         </Overlay>
     );
+
 };
 
 export default PopupMessage;

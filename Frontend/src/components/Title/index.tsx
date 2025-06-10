@@ -14,7 +14,9 @@ const Title: React.FC<TitleProps> = ({
     fontSize = "3rem",
     fontFamily = "'Irish Grover', cursive",
     onClick,
+
 }) => {
+
     return (
         <h1
             style={{ color, fontSize, fontFamily, cursor: onClick ? 'pointer' : 'default' }}

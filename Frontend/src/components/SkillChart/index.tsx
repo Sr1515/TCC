@@ -19,9 +19,11 @@ interface SkillChartProps {
 }
 
 const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
+
     const chartRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+
         if (!chartRef.current) return;
 
         const chart = echarts.init(chartRef.current, undefined, { renderer: 'svg' });
@@ -60,7 +62,7 @@ const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
                 axisLabel: {
                     rotate: players.length > 5 ? 30 : 0,
                     fontWeight: "bold",
-                    fontSize: 12,
+                    fontSize: 20,
                     color: "#333"
                 },
                 axisLine: {
@@ -79,7 +81,7 @@ const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
                 interval: Math.ceil(yMax / 5),
                 axisLabel: {
                     fontWeight: "bold",
-                    fontSize: 12,
+                    fontSize: 20,
                     color: "#333",
                     formatter: (value: number) => `${Math.floor(value)}`
                 },
@@ -112,7 +114,7 @@ const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
                         show: true,
                         position: "top",
                         fontWeight: "bold",
-                        fontSize: 12,
+                        fontSize: 20,
                         color: "#333",
                         formatter: (params: any) => `${params.value}`
                     },
@@ -144,6 +146,8 @@ const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
             chart.dispose();
             window.removeEventListener("resize", resizeHandler);
         };
+
+
     }, [players, skill]);
 
     return <ChartContainer ref={chartRef} />;

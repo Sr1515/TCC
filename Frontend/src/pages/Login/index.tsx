@@ -14,10 +14,9 @@ import { AuthContext } from "../../context/AuthProvider";
 import { loginSchema, LoginData } from "../../schemas/loginSchema";
 
 const Login = () => {
+    const [popupMensagem, setPopupMensagem] = useState<string | null>(null);
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
-
-    const [popupMensagem, setPopupMensagem] = useState<string | null>(null);
 
     const {
         register,
@@ -28,6 +27,7 @@ const Login = () => {
     });
 
     const onSubmit = async (data: LoginData) => {
+
         try {
             await login(data.email, data.password);
 
