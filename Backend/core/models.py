@@ -64,14 +64,14 @@ class Game(BaseModel):
 class Session(BaseModel):
 
     DURATION_CHOICES = [
-        (2, '2 minutos'),
         (4, '4 minutos'),
+        (5, '5 minutos'),  
         (6, '6 minutos')
     ]
 
     STATUS_CHOICES = [
         ('pendente', 'Pendente'),
-        ('em_andamento', 'Em andamento'),
+        ('em andamento', 'Em andamento'),
         ('concluida', 'Concluída'),
     ]
 

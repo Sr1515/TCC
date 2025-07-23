@@ -1,58 +1,47 @@
 import styled from "styled-components";
 
-export const PlayerCard = styled.div`
-  width: 80%;
-  margin: 2rem auto;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 0 1rem;
-  }
-`;
-
-export const StatsTable = styled.table`
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
+export const TableWrapper = styled.div`
+  border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 600px;
+  font-family: "Irish Grover", cursive;
+`;
 
-  @media (max-width: 768px) {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
+export const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+export const TableHead = styled.thead`
+  background-color: #fca311;
 `;
 
 export const TableHeader = styled.th`
-  background-color: #2baeb7;
-  font-family: 'Irish Grover', cursive;
-  color: white;
   padding: 1rem;
   text-align: center;
-  font-size: 30px;
-  width: 33.33%; 
-`;
-
-export const TableCell = styled.td`
-  background-color: #e9ecef;
-  font-family: 'Irish Grover', cursive;
-  padding: 1rem;
-  text-align: center;
-  font-weight: bold;
-  width: 33.33%; 
-  font-size: 27px;
+  font-size: 1.25rem;
 `;
 
 export const TableRow = styled.tr``;
 
-export const TableFooter = styled.td`
-  background-color: #2baeb7;
-  font-family: 'Irish Grover', cursive;
-  color: white;
+export const TableCell = styled.td`
+  border: 1px solid #ddd;
   padding: 1rem;
-  text-align: center;
+  text-align: left;
+  font-size: 1.5rem;
+  font-family: "Irish Grover", cursive;
+  background-color: #c9c9d0;
+`;
+
+export const HighlightRow = styled(TableRow)`
+  background-color: gray;
+  font-family: "Irish Grover", cursive;
+`;
+
+export const PlayerName = styled.span`
   font-weight: bold;
-  font-size: 1.1rem;
+  font-family: "Irish Grover", cursive;
 `;

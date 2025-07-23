@@ -1,85 +1,62 @@
-import { PlayerCard, StatsTable, TableCell, TableHeader, TableRow } from "./style";
+import {
+  HighlightRow,
+  PlayerName,
+  StyledTable,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableWrapper,
+} from "./style";
 
 interface PlayerStats {
-    teamwork: string;
-    communication: string;
-    timeManagement: string;
+  teamwork: number;
+  communication: number;
+  timeManagement: number;
 }
 
 interface Player {
-    id: string;
-    name: string;
-    stats: PlayerStats;
-    score: string;
+  id: string;
+  name: string;
+  stats: PlayerStats;
+  score: number;
 }
 
-interface PlayersTableProps {
-    players: Player[];
-}
-
-const PlayerStats: React.FC<{ player: Player }> = ({ player }) => {
-
-    return (
-
-        <PlayerCard>
-
-            <StatsTable>
-
-                <thead>
-
-                    <tr>
-                        <TableHeader colSpan={3}>Nome</TableHeader>
-                    </tr>
-
-                    <tr>
-                        <TableCell colSpan={3}>{player.name}</TableCell>
-                    </tr>
-
-                    <TableRow>
-                        <TableHeader>Trabalho em equipe</TableHeader>
-                        <TableHeader>Comunicação</TableHeader>
-                        <TableHeader>Gerenciamento de tempo</TableHeader>
-                    </TableRow>
-
-                </thead>
-
-                <tbody>
-
-                    <tr>
-                        <TableCell>{player.stats.teamwork}</TableCell>
-                        <TableCell>{player.stats.communication}</TableCell>
-                        <TableCell>{player.stats.timeManagement}</TableCell>
-                    </tr>
-
-                    <tr>
-                        <TableHeader colSpan={3}>Score</TableHeader>
-                    </tr>
-
-                    <tr>
-                        <TableCell colSpan={3}>{player.score}</TableCell>
-                    </tr>
-
-                </tbody>
-
-            </StatsTable>
-
-        </PlayerCard>
-    );
+const PlayerStats = ({ player }: { player: Player }) => {
+  return (
+    <TableWrapper>
+      <StyledTable>
+        <TableHead>
+          <TableRow>
+            <TableHeader colSpan={2}>
+              <PlayerName>{player.name}</PlayerName>
+            </TableHeader>
+          </TableRow>
+        </TableHead>
+        <tbody>
+          <TableRow>
+            <TableCell>Trabalho em equipe</TableCell>
+            <TableCell>{player.stats.teamwork.toFixed(2)}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Comunicação</TableCell>
+            <TableCell>{player.stats.communication.toFixed(2)}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Gerenciamento de tempo</TableCell>
+            <TableCell>{player.stats.timeManagement.toFixed(2)}</TableCell>
+          </TableRow>
+          <HighlightRow>
+            <TableCell>
+              <strong>Score</strong>
+            </TableCell>
+            <TableCell>{player.score.toFixed(2)}</TableCell>
+          </HighlightRow>
+        </tbody>
+      </StyledTable>
+    </TableWrapper>
+  );
 };
 
-
-const PlayersTable: React.FC<PlayersTableProps> = ({ players }) => {
-
-    return (
-
-        <div>
-            {players.map((player) => (
-                <PlayerStats key={player.id} player={player} />
-            ))}
-        </div>
-
-    );
-
-};
-
-export default PlayersTable;
+export { PlayerStats };
+export type { Player };

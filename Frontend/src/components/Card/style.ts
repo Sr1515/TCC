@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: #8C92AC;
+  background-color: #8c92ac;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   color: #e2e8f0;
   width: 30%;
@@ -37,12 +37,12 @@ export const GameInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   text-align: start;
-  color: #2D2D2D;
-  font-family: 'Irish Grover', cursive;
+  color: #2d2d2d;
+  font-family: "Irish Grover", cursive;
   gap: 0.5rem;
 
   .highlight {
-    color: #CFD8DC;
+    color: #cfd8dc;
     font-weight: bold;
   }
 
@@ -58,7 +58,7 @@ export const CardFooter = styled.div`
   justify-content: center;
   align-items: center;
   padding: 30px;
-  gap: 1.5rem;
+  gap: 1rem;
   width: 45%;
 
   @media (max-width: 768px) {

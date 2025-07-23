@@ -3,14 +3,14 @@ import * as echarts from "echarts";
 import { ChartContainer } from "./style";
 
 interface Player {
-    id: number;
-    name: string;
-    score: number;
-    stats: {
-        teamwork: number;
-        communication: number;
-        timeManagement: number;
-    };
+  id: string;  
+  name: string;
+  score: number;
+  stats: {
+    teamwork: number;
+    communication: number;
+    timeManagement: number;
+  };
 }
 
 interface SkillChartProps {

@@ -40,7 +40,7 @@ type TokenPayload = {
 };
 
 const CreateSession = () => {
-    const [playersCount, setPlayersCount] = useState<number>(4);
+    const [inputValue, setInputValue] = useState("4");
     const [selectedGame, setSelectedGame] = useState<Game | null>(null);
     const [selectedTime, setSelectedTime] = useState<number | null>(null);
     const [allGames, setAllGames] = useState<Game[] | null>(null);
@@ -58,7 +58,6 @@ const CreateSession = () => {
     ];
 
     const fetchGames = async () => {
-
         if (!tokenState) return;
 
         try {
@@ -84,8 +83,7 @@ const CreateSession = () => {
     };
 
     const handlePlayerCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.target.value);
-        setPlayersCount(isNaN(value) ? 1 : Math.max(0, Math.min(10, value)));
+        setInputValue(e.target.value);
     };
 
     const handleTimeSelect = (minutes: number) => {
@@ -93,8 +91,24 @@ const CreateSession = () => {
     };
 
     const onSubmit = async () => {
+        if (!tokenState) return;
 
-        if (!tokenState || !playersCount || !selectedGame || !selectedTime) return;
+        const parsedInput = parseInt(inputValue, 10);
+
+        if (isNaN(parsedInput) || parsedInput === 0) {
+            setPopupMessage("A partida precisa ter pelo menos 1 jogador.");
+            return;
+        }
+
+        if (parsedInput > 10) {
+            setPopupMessage("A partida não pode ter mais que 10 jogadores.");
+            return;
+        }
+
+        if (!selectedGame || selectedTime === null) {
+            setPopupMessage("Selecione um jogo e um tempo para continuar.");
+            return;
+        }
 
         try {
             const decoded = jwtDecode<TokenPayload>(tokenState);
@@ -103,8 +117,8 @@ const CreateSession = () => {
             const session = {
                 organizer: userId,
                 game: selectedGame.id,
-                max_participantes: playersCount,
-                duration: selectedTime
+                max_participantes: parsedInput,
+                duration: selectedTime 
             };
 
             const response = await api.post('sessions/', session, {
@@ -113,14 +127,18 @@ const CreateSession = () => {
 
             if (response.status === 201) {
                 setPopupMessage("Sessão criada com sucesso!");
-
                 setTimeout(() => {
                     navigate('/home', { replace: true });
                 }, 2000);
             }
 
-        } catch (error) {
-            console.log(`Error: ${error}`);
+        } catch (error: any) {
+            console.log("Erro:", error);
+            if (error.response) {
+                setPopupMessage("Erro ao criar sessão: " + JSON.stringify(error.response.data));
+            } else {
+                setPopupMessage("Erro inesperado ao criar sessão.");
+            }
         }
     };
 
@@ -131,9 +149,7 @@ const CreateSession = () => {
     return (
         <>
             <NavBar />
-
             <MainContainer>
-
                 <ContentWrapper>
                     <Title name="CRIAR SESSÃO" />
 
@@ -145,7 +161,8 @@ const CreateSession = () => {
                                     type="number"
                                     min="0"
                                     max="10"
-                                    value={playersCount}
+                                    inputMode="numeric"
+                                    value={inputValue}
                                     onChange={handlePlayerCountChange}
                                 />
                             </InfoPlayers>
@@ -164,8 +181,6 @@ const CreateSession = () => {
                                     ))}
                                 </TimeOptions>
                             </InfoTime>
-
-
                         </OptionsContainer>
 
                         <InfoContainer>
@@ -196,7 +211,6 @@ const CreateSession = () => {
                             onClick={onSubmit}
                         />
                     </ButtonContainer>
-
                 </ContentWrapper>
             </MainContainer>
 

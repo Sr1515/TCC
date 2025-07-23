@@ -1,184 +1,153 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { api } from "../../api/axios";
-import NavBar from "../../components/Navbar";
-import { CenteredTitle, ChartsWrapper, Container, Content, ExportData, HeaderContent, PlayersData, SessionCard, SessionInfo } from "./style";
-import Title from "../../components/Title";
-import Button from "../../components/Button";
-import PlayersTable from "../../components/PlayerTable";
-import { gerarPDF } from "../../utils/pdfExport";
-import PopupMessage from "../../components/PopupMessage";
+import { Container, Grid, ChartCard, SessionInfo } from "./style";
 import SkillChart from "../../components/SkillChart";
-
-type SessionProps = {
-    id: string;
-    game: string;
-    game_title: string;
-    organizer: string;
-    organizer_username: string;
-    session_code: string;
-    max_participantes: number;
-    duration: number;
-    created_at: string;
-    updated_at: string;
-    status: string;
-};
+import Navbar from "../../components/Navbar";
+import { Player, PlayerStats } from "../../components/PlayerTable";
+import Button from "../../components/Button";
+import { gerarPDF } from "../../utils/pdfExport";
+import Title from "../../components/Title";
+import PopupMessage from "../../components/PopupMessage";
 
 const SessionDetail = () => {
-    const { id } = useParams();
-    const { checkToken, tokenState } = useContext(AuthContext);
-    const [session, setSession] = useState<SessionProps | null>(null);
-    const [players, setPlayers] = useState([]);
-    const [pdfSuccessMessage, setPdfSuccessMessage] = useState<string | null>(null);
+  const { id } = useParams();
+  const { checkToken, tokenState } = useContext(AuthContext);
+  const [session, setSession] = useState<any>(null);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [pdfSuccessMessage, setPdfSuccessMessage] = useState<string | null>(
+    null
+  );
 
-    const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-    checkToken();
+  checkToken();
 
-    useEffect(() => {
+  useEffect(() => {
+    if (!tokenState || !id) return;
 
-        const fetchPlayers = async () => {
+    const fetchData = async () => {
+      const [sessionRes, playersRes] = await Promise.all([
+        api.get(`sessions/${id}/`, {
+          headers: { Authorization: `Bearer ${tokenState}` },
+        }),
+        api.get(`players/by-session/${id}/`, {
+          headers: { Authorization: `Bearer ${tokenState}` },
+        }),
+      ]);
 
-            if (!tokenState || !id) return;
+      setSession(sessionRes.data);
 
-            try {
-                const response = await api.get(`players/by-session/${id}/`, {
-                    headers: {
-                        Authorization: `Bearer ${tokenState}`
-                    }
-                });
+      const formattedPlayers: Player[] = playersRes.data.map((player: any) => ({
+        id: String(player.id),
+        name: player.player_name,
+        score: Number(player.score),
+        stats: {
+          teamwork: Number(player.teamwork),
+          communication: Number(player.communication),
+          timeManagement: Number(player.time_management),
+        },
+      }));
 
-                const formattedPlayers = response.data.map((player: any) => ({
-                    id: player.id,
-                    name: player.player_name,
-                    score: player.score,
-                    stats: {
-                        teamwork: player.teamwork,
-                        communication: player.communication,
-                        timeManagement: player.time_management
-                    }
-                }));
-
-                setPlayers(formattedPlayers);
-
-            } catch (error) {
-                console.error("Erro ao buscar jogadores da sessão:", error);
-            }
-        };
-
-        fetchPlayers();
-
-    }, [id, tokenState]);
-
-    useEffect(() => {
-
-        const fetchSession = async () => {
-
-            if (!tokenState || !id) return;
-
-            try {
-                const response = await api.get(`sessions/${id}/`, {
-                    headers: {
-                        Authorization: `Bearer ${tokenState}`
-                    }
-                });
-                setSession(response.data);
-
-            } catch (error) {
-                console.error("Erro ao buscar detalhes da sessão:", error);
-            }
-        };
-
-        fetchSession();
-
-    }, [id, tokenState]);
-
-    const handleDownloadPDF = async () => {
-
-        if (!session) return;
-
-        setPdfSuccessMessage("Preparando PDF...");
-
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        try {
-            await gerarPDF(contentRef.current!, `sessao-${session.session_code}.pdf`);
-            setPdfSuccessMessage("PDF exportado com sucesso!");
-        } catch (error) {
-            setPdfSuccessMessage("Erro ao gerar PDF");
-            console.error(error);
-        } finally {
-            setTimeout(() => setPdfSuccessMessage(null), 3000);
-        }
+      setPlayers(formattedPlayers);
     };
 
-    if (!session) return <p>Carregando detalhes da sessão...</p>;
+    fetchData();
+  }, [id, tokenState]);
 
-    return (
-        <>
-            <NavBar />
+  const handleDownloadPDF = async () => {
+    if (!contentRef.current) return;
 
-            <Container ref={contentRef}>
+    setPdfSuccessMessage("Preparando PDF...");
 
-                <HeaderContent>
+    try {
+      await gerarPDF(contentRef.current, `sessao-${session.session_code}.pdf`);
+      setPdfSuccessMessage("PDF exportado com sucesso!");
+    } catch (error) {
+      setPdfSuccessMessage("Erro ao gerar PDF");
+      console.error(error);
+    } finally {
+      setTimeout(() => setPdfSuccessMessage(null), 3000);
+    }
+  };
 
-                    <Content>
+  if (!session) return <p>Carregando sessão...</p>;
 
-                        <CenteredTitle>
-                            <Title name="INFORMAÇÕES DA SESSÃO" fontSize="2rem" color="#FFFFFF" />
-                        </CenteredTitle>
+  return (
+    <>
+      <Navbar />
 
-                        <SessionCard>
-                            <SessionInfo><strong>Código:</strong> {session.session_code}</SessionInfo>
-                            <SessionInfo><strong>Status:</strong> {session.status}</SessionInfo>
-                            <SessionInfo><strong>Jogo:</strong> {session.game_title}</SessionInfo>
-                            <SessionInfo><strong>Máximo de participantes:</strong> {session.max_participantes}</SessionInfo>
-                            <SessionInfo><strong>Duração:</strong> {session.duration} minutos</SessionInfo>
-                            <SessionInfo><strong>Criado em:</strong> {new Date(session.created_at).toLocaleString()}</SessionInfo>
-                        </SessionCard>
-                    </Content>
+      <Container>
+        <Grid ref={contentRef}>
+          <ChartCard>
+            <SessionInfo>
+              <strong>Código:</strong> {session.session_code}
+            </SessionInfo>
+            <SessionInfo>
+              <strong>Status:</strong> {session.status}
+            </SessionInfo>
+            <SessionInfo>
+              <strong>Jogo:</strong> {session.game_title}
+            </SessionInfo>
+            <SessionInfo>
+              <strong>Máximo de participantes:</strong>{" "}
+              {session.max_participantes}
+            </SessionInfo>
+            <SessionInfo>
+              <strong>Duração:</strong> {session.duration} minutos
+            </SessionInfo>
+            <SessionInfo>
+              <strong>Criado em:</strong>{" "}
+              {new Date(session.created_at).toLocaleString()}
+            </SessionInfo>
+          </ChartCard>
 
-                    <ExportData>
-                        <div style={{ textAlign: "center", paddingBlock: "2rem" }}>
-                            <Title name="EXPORTAR" fontSize="2rem" color="#FFFFFF" />
-                        </div>
-                        <Button
-                            name="PDF"
-                            backgroundColor="#FF6567"
-                            width="13rem"
-                            borderRadius="2rem"
-                            height="4rem"
-                            onClick={handleDownloadPDF}
-                        />
-                    </ExportData>
+          <ChartCard>
+            <Title name="EXPORTAR" fontSize="3rem" />
+            <Button
+              name="PDF"
+              backgroundColor="#FF6567"
+              width="13rem"
+              borderRadius="2rem"
+              height="4rem"
+              onClick={handleDownloadPDF}
+            />
+          </ChartCard>
 
-                </HeaderContent>
+          {players.map((player) => (
+            <ChartCard key={player.id}>
+              <PlayerStats player={player} />
+            </ChartCard>
+          ))}
 
-                <PlayersData>
-                    <PlayersTable players={players} />
-                </PlayersData>
+          <ChartCard>
+            <SkillChart players={players} skill="score" />
+          </ChartCard>
 
-                {players.length > 0 && (
-                    <ChartsWrapper >
-                        <SkillChart players={players} skill="score" />
-                        <SkillChart players={players} skill="teamwork" />
-                        <SkillChart players={players} skill="communication" />
-                        <SkillChart players={players} skill="timeManagement" />
-                    </ChartsWrapper>
-                )}
+          <ChartCard>
+            <SkillChart players={players} skill="teamwork" />
+          </ChartCard>
 
-            </Container>
+          <ChartCard>
+            <SkillChart players={players} skill="communication" />
+          </ChartCard>
 
-            {pdfSuccessMessage && (
-                <PopupMessage
-                    message={pdfSuccessMessage}
-                    onClose={() => setPdfSuccessMessage(null)}
-                    duration={3000}
-                />
-            )}
-        </>
-    );
+          <ChartCard>
+            <SkillChart players={players} skill="timeManagement" />
+          </ChartCard>
+        </Grid>
+
+        {pdfSuccessMessage && (
+          <PopupMessage
+            message={pdfSuccessMessage}
+            duration={3000}
+            onClose={() => setPdfSuccessMessage(null)}
+          />
+        )}
+      </Container>
+    </>
+  );
 };
 
 export default SessionDetail;
