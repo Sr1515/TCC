@@ -7,7 +7,12 @@ export const gerarPDF = async (
 ) => {
   if (!element) return;
 
-  const cards = Array.from(element.children);
+  const cards = Array.from(element.children).filter(
+    (el) => !el.querySelector("#buttonExport")
+  );
+
+  console.log(cards);
+
   const pdf = new jsPDF("p", "mm", "a4");
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();

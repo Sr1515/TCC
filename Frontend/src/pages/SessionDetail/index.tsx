@@ -105,14 +105,16 @@ const SessionDetail = () => {
 
           <ChartCard>
             <Title name="EXPORTAR" fontSize="3rem" />
-            <Button
-              name="PDF"
-              backgroundColor="#FF6567"
-              width="13rem"
-              borderRadius="2rem"
-              height="4rem"
-              onClick={handleDownloadPDF}
-            />
+            <div id="buttonExport">
+              <Button
+                name="PDF"
+                backgroundColor="#FF6567"
+                width="13rem"
+                borderRadius="2rem"
+                height="4rem"
+                onClick={handleDownloadPDF}
+              />
+            </div>
           </ChartCard>
 
           {players.map((player) => (
