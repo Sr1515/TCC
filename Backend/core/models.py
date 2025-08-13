@@ -71,7 +71,6 @@ class Session(BaseModel):
 
     STATUS_CHOICES = [
         ('pendente', 'Pendente'),
-        ('em andamento', 'Em andamento'),
         ('concluida', 'Concluída'),
     ]
 
@@ -92,6 +91,7 @@ class Session(BaseModel):
     
 class Player(BaseModel):
     player_name = models.CharField(max_length=100)
+    player_code = models.CharField(max_length=10, null=True, blank=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='players')
     score = models.DecimalField(default=0, max_digits=5, decimal_places=2)
     teamwork = models.DecimalField(default=0, max_digits=5, decimal_places=2)
@@ -109,11 +109,10 @@ class Player(BaseModel):
         if self.session.players.count() >= self.session.max_participantes:
             raise ValidationError("Número máximo de participantes atingido!") 
     
-class BatchResult(BaseModel):
-    session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='batches_results')
-    data = models.JSONField() 
-    timestamp = models.DateTimeField(auto_now_add=True)  
+class Result(BaseModel):
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='results')
+    data = models.JSONField()  
 
     def __str__(self):
-        return f"Resultado do lote da sessão {self.session.session_code} em {self.timestamp}"
+        return f"Resultado da sessão {self.session.session_code}"
 

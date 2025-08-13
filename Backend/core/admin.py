@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Game, Player, BatchResult, Session
+from .models import CustomUser, Game, Player, Result, Session
 from django.core.exceptions import ValidationError
 
 class CustomUserAdmin(UserAdmin):
@@ -29,7 +29,7 @@ class GameAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
 
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ('player_name', 'session', 'score', 'teamwork', 'communication', 'time_management')
+    list_display = ('player_name', 'player_code', 'session', 'score', 'teamwork', 'communication', 'time_management')
     
     def save_model(self, request, obj, form, change):
         try:
@@ -49,5 +49,5 @@ class SessionAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Game, GameAdmin)
 admin.site.register(Player, PlayerAdmin)
-admin.site.register(BatchResult, ResultAdmin)
+admin.site.register(Result, ResultAdmin)
 admin.site.register(Session, SessionAdmin)

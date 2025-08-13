@@ -1,10 +1,11 @@
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import CustomUser, Game, Player, Session, BatchResult
-from .serializers import CustomUserSerializer, GameSerializer, PlayerSerializer, SessionSerializer, BatchResultSerializer
+from .models import CustomUser, Game, Player, Session, Result
+from .serializers import CustomUserSerializer, GameSerializer, PlayerSerializer, SessionSerializer, ResultSerializer
 from rest_framework import status
 from uuid import UUID
+from rest_framework.permissions import AllowAny
 
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -50,7 +51,7 @@ class SessionViewSet(viewsets.ModelViewSet):
         return Session.objects.filter(organizer=self.request.user)
 
 
-class BatchResultViewSet(viewsets.ModelViewSet):
-    queryset = BatchResult.objects.all()
-    serializer_class = BatchResultSerializer
-    permission_classes = [permissions.IsAuthenticated]
+class ResultViewSet(viewsets.ModelViewSet):
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
+    permission_classes = [permissions.AllowAny]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Game, Session, BatchResult, Player
+from .models import CustomUser, Game, Session, Result, Player
 from django.contrib.auth.hashers import make_password
 from datetime import datetime
 
@@ -60,44 +60,24 @@ class SessionSerializer(serializers.ModelSerializer):
             'status'
         ]
 
-class BatchResultSerializer(serializers.ModelSerializer):
-    session = serializers.PrimaryKeyRelatedField(queryset = Session.objects.all())
-    data_ = serializers.JSONField
+class ResultSerializer(serializers.ModelSerializer):
+    session = serializers.CharField(write_only=True)
+    
     class Meta:
-        model = BatchResult
-        fields = ['session', 'data', 'timestamp']
+        model = Result
+        fields = ['session', 'data']
 
-    
-    def validade_data(self, value):
+    def validate_session(self, value):
+        try:
+            session = Session.objects.get(session_code=value)
+        except Session.DoesNotExist:
+            raise serializers.ValidationError("Sessão não encontrada.")
 
-        if not isinstance(value, dict):
-            raise serializers.ValidationError("O campo 'data' deve ser um dicionário.")
-        
-        for player_id, actions in value.items():
+        return session
 
-            if not Player.objects.filter(id = player_id).exists():
-                raise serializers.ValidationError(f"Jogador com ID {player_id} não encontrado.")
-            
-            if not isinstance(actions, list):
-                raise serializers.ValidationError(f"As ações do jogador {player_id} devem ser uma lista.")
-
-        for action_data in actions:
-                
-                if not isinstance(action_data, dict):
-                    raise serializers.ValidationError(f"Cada item de ação para o jogador {player_id} deve ser um dicionário.")
-                
-                if 'action' not in action_data or 'timestamp' not in action_data:
-                    raise serializers.ValidationError(f"Cada ação do jogador {player_id} deve conter 'action' e 'timestamp'.")
-                
-                if not isinstance(action_data['action'], str):
-                    raise serializers.ValidationError(f"A ação do jogador {player_id} deve ser uma string.")
-                
-                try:
-                    datetime.strptime(action_data['timestamp'], '%d/%m %H:%M')
-                except ValueError:
-                    raise serializers.ValidationError(f"Timestamp do jogador {player_id} tem formato inválido. Use 'DD/MM HH:MM'.")
-        
+    def validate_data(self, value):
         return value
-    
+
     def create(self, validated_data):
-        return super().create(validated_data) 
+        session_instance = validated_data.pop('session')
+        return Result.objects.create(session=session_instance, **validated_data)
