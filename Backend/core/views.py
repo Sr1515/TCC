@@ -27,18 +27,26 @@ class GameViewSet(viewsets.ModelViewSet):
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
-    @action(detail=False, methods=["get"], url_path="by-session/(?P<session_id>[0-9a-f-]{36})")
-    def by_session(self, request, session_id=None):
+    @action(detail=False, methods=["get"], url_path="by-session-id/(?P<session_id>[0-9a-f-]{36})")
+    def by_session_id(self, request, session_id=None):
         try:
-            session_uuid = UUID(session_id)  
-
-            players = Player.objects.filter(session_id=session_uuid)
+            players = Player.objects.filter(session_id=session_id)
             serializer = self.get_serializer(players, many=True)
             return Response(serializer.data)
-        except ValueError:
-            return Response({'error': 'UUID inválido.'}, status=400)
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
+
+    @action(detail=False, methods=["get"], url_path="by-session-code/(?P<session_code>[^/]+)")
+    def by_session_code(self, request, session_code=None):
+        try:
+            session = Session.objects.get(session_code=session_code)
+            players = Player.objects.filter(session=session)
+            serializer = self.get_serializer(players, many=True)
+            return Response(serializer.data)
+        except Session.DoesNotExist:
+            return Response({'error': 'Sessão não encontrada.'}, status=404)
         except Exception as e:
             return Response({'error': str(e)}, status=500)
 
@@ -50,6 +58,26 @@ class SessionViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Session.objects.filter(organizer=self.request.user)
 
+    @action(
+        detail=False, 
+        methods=["get"], 
+        url_path="by-session_code/(?P<session_code>[^/]+)", 
+        permission_classes=[permissions.AllowAny]
+    )
+    def get_by_code(self, request, session_code=None):
+        try:
+            session = Session.objects.get(session_code=session_code)
+            session_data = SessionSerializer(session).data
+            
+            return Response({
+                "session": session_data,
+            })
+            
+        except Session.DoesNotExist:
+            return Response(
+                {"error": "Sessão não encontrada."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
 
 class ResultViewSet(viewsets.ModelViewSet):
     queryset = Result.objects.all()

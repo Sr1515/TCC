@@ -32,9 +32,7 @@ const SessionDetail = () => {
         api.get(`sessions/${id}/`, {
           headers: { Authorization: `Bearer ${tokenState}` },
         }),
-        api.get(`players/by-session/${id}/`, {
-          headers: { Authorization: `Bearer ${tokenState}` },
-        }),
+        api.get(`players/by-session-id/${id}/`),
       ]);
 
       setSession(sessionRes.data);
