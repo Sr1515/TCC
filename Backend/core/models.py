@@ -106,6 +106,8 @@ class Player(BaseModel):
         super().save(*args, **kwargs)
 
     def clean(self):
+        if self.pk:
+            return
         if self.session.players.count() >= self.session.max_participantes:
             raise ValidationError("Número máximo de participantes atingido!") 
     
