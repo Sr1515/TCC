@@ -73,11 +73,11 @@ poetry.lock
 docker-compose.override.yml
 data/
 
-!*.environment/.env.postgres.example
-!*.environment/.env.django.example
+!*Backend/.environment/.env.postgres.example
+!*Backend/.environment/.env.django.example
 
-.environment/.env.postgres
-.environment/.env.django
+Backend/.environment/.env.postgres
+Backend/.environment/.env.django
 
 # IDEs and Editors
 .vscode/
