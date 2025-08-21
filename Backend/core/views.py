@@ -38,15 +38,24 @@ class PlayerViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({'error': str(e)}, status=500)
 
-    @action(detail=False, methods=["get"], url_path="by-session-code/(?P<session_code>[^/]+)")
-    def by_session_code(self, request, session_code=None):
+    @action(detail=False, methods=["post"], url_path="by-session-code/(?P<session_code>[^/]+)")
+    def add_player_by_session_code(self, request, session_code=None):
         try:
             session = Session.objects.get(session_code=session_code)
-            players = Player.objects.filter(session=session)
-            serializer = self.get_serializer(players, many=True)
-            return Response(serializer.data)
+
+            data = request.data.copy()
+            data["session"] = str(session.id)
+
+            serializer = self.get_serializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(session=session)
+
+            return Response(serializer.data, status=201)
+
         except Session.DoesNotExist:
             return Response({'error': 'Sessão não encontrada.'}, status=404)
+        except ValidationError as e:
+            return Response({'error': e.message_dict}, status=400)
         except Exception as e:
             return Response({'error': str(e)}, status=500)
 
@@ -61,7 +70,7 @@ class SessionViewSet(viewsets.ModelViewSet):
     @action(
         detail=False, 
         methods=["get"], 
-        url_path="by-session_code/(?P<session_code>[^/]+)", 
+        url_path="by-session-code/(?P<session_code>[^/]+)", 
         permission_classes=[permissions.AllowAny]
     )
     def get_by_code(self, request, session_code=None):
