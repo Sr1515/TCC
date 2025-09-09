@@ -60,10 +60,12 @@ const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
                 type: "category",
                 data: players.map(p => p.name),
                 axisLabel: {
-                    rotate: players.length > 5 ? 30 : 0,
+                    rotate: 30,
                     fontWeight: "bold",
-                    fontSize: 20,
-                    color: "#333"
+                    fontSize: 14,
+                    color: "#333",
+                    overflow: "break", 
+                    lineHeight: 18
                 },
                 axisLine: {
                     lineStyle: {
@@ -118,7 +120,7 @@ const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
                         color: "#333",
                         formatter: (params: any) => `${params.value}`
                     },
-                    barWidth: "20%",
+                    barWidth: players.length > 10 ? "50%" : "20%",
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
@@ -132,9 +134,10 @@ const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
                 containLabel: true,
                 left: "5%",
                 right: "5%",
-                bottom: "15%",
+                bottom: "30%",
                 top: "15%"
-            }
+            },
+
         };
 
         chart.setOption(option);

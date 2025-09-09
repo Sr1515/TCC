@@ -52,9 +52,10 @@ const CreateSession = () => {
     checkToken();
 
     const timeOptions: TimeOption[] = [
-        { minutes: 4, label: "4 minutos" },
         { minutes: 5, label: "5 minutos" },
-        { minutes: 6, label: "6 minutos" }
+        { minutes: 10, label: "10 minutos" },
+        { minutes: 15, label: "15 minutos" },
+        { minutes: 20, label: "20 minutos" }
     ];
 
     const fetchGames = async () => {
