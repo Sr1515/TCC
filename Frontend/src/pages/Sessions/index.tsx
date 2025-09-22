@@ -15,6 +15,7 @@ type SessionProps = {
     session_code: string;
     max_participantes: number;
     duration: number;
+    link: string;
     created_at: string;
     updated_at: string;
     status: string;
@@ -41,6 +42,7 @@ const Sessions = () => {
             });
 
             setMySessions(response.data);
+            console.log(response.data)
 
         } catch (error) {
             console.log(`Error: ${error}`);
@@ -97,6 +99,7 @@ const Sessions = () => {
                         game={session.game_title}
                         sessionCode={session.session_code}
                         players={session.max_participantes}
+                        link={session.link}
                         onDelete={() => handleDeleteClick(session.id)}
                     />
                 ))}

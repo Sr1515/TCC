@@ -57,6 +57,7 @@ class CustomUser(BaseModel, AbstractBaseUser, PermissionsMixin):
 class Game(BaseModel):
     name = models.CharField(max_length = 50, unique = True)
     description = models.TextField()
+    link = models.TextField(default="")
 
     def __str__(self):
         return self.name

@@ -18,6 +18,14 @@ interface SkillChartProps {
     skill: keyof Player | keyof Player["stats"];
 }
 
+const skillNamesPT: Record<string, string> = {
+  score: "Pontuação Total",
+  teamwork: "Trabalho em Equipe",
+  communication: "Comunicação",
+  timeManagement: "Gerenciamento de Tempo",
+};
+
+
 const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
 
     const chartRef = useRef<HTMLDivElement>(null);
@@ -39,7 +47,7 @@ const SkillChart: React.FC<SkillChartProps> = ({ players, skill }) => {
 
         const option: echarts.EChartsOption = {
             title: {
-                text: `${skill.toString().toUpperCase()}`,
+                text: skillNamesPT[skill as string] || skill.toString(),
                 textStyle: {
                     fontSize: 16,
                     fontWeight: "bold",

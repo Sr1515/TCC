@@ -43,6 +43,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 class SessionSerializer(serializers.ModelSerializer):
     game_title = serializers.CharField(source='game.name', read_only=True)
     organizer_username = serializers.CharField(source='organizer.username', read_only=True)
+    link = serializers.CharField(source='game.link', read_only=True) 
 
     class Meta:
         model = Session
@@ -57,7 +58,8 @@ class SessionSerializer(serializers.ModelSerializer):
             'duration',
             'created_at',
             'updated_at',
-            'status'
+            'status',
+            'link',
         ]
 
 class ResultSerializer(serializers.ModelSerializer):

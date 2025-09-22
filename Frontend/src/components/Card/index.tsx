@@ -10,6 +10,7 @@ type SessionCardProps = {
   game?: string;
   players?: number;
   duration?: string;
+  link?: string;
   color?: string;
   onDelete?: (id: string) => void;
 };
@@ -21,6 +22,7 @@ const Card: React.FC<SessionCardProps> = ({
   game,
   players,
   duration,
+  link,
   color = "#8C92AC",
   onDelete,
 }) => {
@@ -36,6 +38,14 @@ const Card: React.FC<SessionCardProps> = ({
       onDelete(id);
     }
   };
+
+  const handleCopyLink = () => {
+    if (link) {
+      navigator.clipboard.writeText(link);
+      alert("Link copiado para a área de transferência!");
+    }
+  };
+
 
   return (
     <Container style={{ color }}>
@@ -55,30 +65,44 @@ const Card: React.FC<SessionCardProps> = ({
         <h3>
           Duração: <span className="highlight">{duration}</span>
         </h3>
+
       </GameInfo>
 
       <CardFooter>
         <Button
           name="Excluir"
-          height="5rem"
-          width="80%"
-          fontSize="32px"
+          height="4rem"
+          width="70%"
+          fontSize="23px"
           backgroundColor="#FF5252"
           color="#EDF0F4"
           onClick={handleDeleteClick}
         />
 
+        {link && (
+        <Button
+          name="Copiar link"
+          height="4rem"
+          width="70%"
+          fontSize="23px"
+          backgroundColor="#1565c0"
+          color="#EDF0F4"
+          onClick={handleCopyLink}
+          />
+        )}
+
         {status === "concluida" && (
           <Button
             name="Ver detalhes"
-            height="5rem"
-            width="80%"
-            fontSize="32px"
+            height="4rem"
+            width="70%"
+            fontSize="23px"
             backgroundColor="#4CAF50"
             color="#EDF0F4"
             onClick={handleDetailsClick}
           />
         )}
+
       </CardFooter>
     </Container>
   );

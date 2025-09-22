@@ -9,7 +9,7 @@ export const Container = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   color: #e2e8f0;
   width: 30%;
-  height: 12rem;
+  height: 15rem;
   border-radius: 30px;
   padding: 1rem;
 
@@ -42,7 +42,7 @@ export const GameInfo = styled.div`
   gap: 0.5rem;
 
   .highlight {
-    color: #cfd8dc;
+    color: #FFFF;
     font-weight: bold;
   }
 
@@ -57,12 +57,12 @@ export const CardFooter = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px;
   gap: 1rem;
   width: 45%;
+  padding: 1rem;
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 1rem 0;
   }
 `;
+

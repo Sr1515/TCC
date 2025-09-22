@@ -31,7 +31,7 @@ const Login = () => {
         try {
             await login(data.email, data.password);
 
-            setPopupMensagem("Bem-vindo de volta!");
+            setPopupMensagem("Bem-vindo!");
             setTimeout(() => {
                 setPopupMensagem(null);
                 navigate("/home", { replace: true });
